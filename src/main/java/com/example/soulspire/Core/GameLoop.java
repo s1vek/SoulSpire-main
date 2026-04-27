@@ -37,7 +37,6 @@ public class GameLoop {
                 double deltaTime = (now - lastNanoTime) / 1_000_000_000.0;
                 lastNanoTime = now;
 
-                // Cap delta time to prevent spiral of death after lag spikes
                 deltaTime = Math.min(deltaTime, 0.05);
 
                 engine.update(deltaTime);

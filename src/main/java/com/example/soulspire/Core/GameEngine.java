@@ -49,6 +49,22 @@ public class GameEngine {
      */
     public void initNewGame(PlayerType type, String name) {
 
+        tower.generateFloors();
+
+        Floor firstFloor = tower.getCurrentFloor();
+        double spawnx = firstFloor.getSpawnX();
+        double spawny = firstFloor.getSpawnY();
+
+        this.player = switch (type) {
+            case WARRIOR -> new Warrior(name, spawnx, spawny);
+            case SHAMAN -> new Shaman(name, spawnx, spawny);
+            case HUNTER -> new Hunter(name, spawnx, spawny);
+            case MAGE -> new Mage(name, spawnx, spawny);
+        };
+
+        stateManager.setState(GameState.PLAYING);
+        logger.info("New game started");
+
     }
 
     /**
@@ -97,6 +113,17 @@ public class GameEngine {
      * Renders the current game state.
      */
     public void render(GraphicsContext gc) {
+
+        gc.setFill(Color.BLACK);
+        gc.fillRect(0,0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
+
+        if (player == null) {
+            return;
+        }
+
+        Floor currentFloor = tower.getCurrentFloor();
+        currentFloor.render(gc, cameraX, cameraY);
+        player.render(gc, cameraX, cameraY);
 
     }
 
