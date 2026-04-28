@@ -20,6 +20,7 @@ import javafx.scene.paint.Color;
  * Central game engine that coordinates all game systems.
  * Handles the game loop cycle: input → update → collision → render.
  */
+
 public class GameEngine {
 
     private static final GameLogger logger = GameLogger.getLogger(GameEngine.class);

@@ -19,7 +19,7 @@ import java.util.Map;
  * Manages abilities, inventory, lives, and interaction with the game world.
  *
  * <p>Each concrete subclass must implement {@link #initAbilities()} to create
- * the three unique abilities for that character class, and {@link #attack()}
+ * the three unique abilities for that character class, and
  * to define the basic attack behavior.</p>
  *
  * <p>Implements {@link Saveable} so the player's state can be persisted

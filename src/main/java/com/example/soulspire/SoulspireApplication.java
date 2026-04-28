@@ -1,9 +1,13 @@
 package com.example.soulspire;
 
+import com.example.soulspire.Core.*;
 import com.example.soulspire.UI.CharacterSelectScreen;
+import com.example.soulspire.UI.GameScreen;
+import com.example.soulspire.UI.ScreenManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -11,22 +15,30 @@ import java.io.IOException;
 public class SoulspireApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        // Vytvoříme pomocné objekty, které tvoje menu potřebuje
-        // Musíme jim dát to, co vyžadují v konstruktoru (podle tvých screenshotů)
 
-        com.example.soulspire.Core.InputHandler inputHandler = new com.example.soulspire.Core.InputHandler();
-        com.example.soulspire.Core.GameEngine engine = new com.example.soulspire.Core.GameEngine(inputHandler);
+        InputHandler inputHandler = new InputHandler();
 
-        javafx.scene.layout.StackPane root = new javafx.scene.layout.StackPane();
-        com.example.soulspire.UI.ScreenManager screenManager = new com.example.soulspire.UI.ScreenManager(root, engine);
+        GameEngine engine = new GameEngine(inputHandler);
 
-        // Teď vytvoříme samotné menu
-        CharacterSelectScreen charSelect = new CharacterSelectScreen(engine, screenManager);
+        StackPane root = new StackPane();
 
-        // Zobrazíme to
-        Scene scene = new Scene(charSelect);
-        stage.setTitle("SoulSpire - Preview");
+        GameScreen gameScreen = new GameScreen(engine);
+        root.getChildren().add(gameScreen);
+
+        ScreenManager screenManager =  new ScreenManager(root, engine);
+        screenManager.initScreens();
+        screenManager.showScreen(GameState.MAIN_MENU);
+
+        Scene scene = new Scene(root, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
+
+        inputHandler.registerHandlers(scene);
+
+        stage.setTitle("SoulSpire");
         stage.setScene(scene);
         stage.show();
+
+        GameLoop loop = new GameLoop(engine, gameScreen.getGraphicsContext());
+        loop.start();
+
     }
 }
