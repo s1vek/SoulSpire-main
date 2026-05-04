@@ -22,6 +22,9 @@ public class GameConfig {
     /** Size of one tile in pixels (tiles are square). */
     public static final int TILE_SIZE = 48;
 
+    public static final int FLOOR_WIDTH_TILES = 60;
+    public static final int FLOOR_HEIGHT_TILES = 40;
+
     // === Game rules ===
 
     /** Total number of floors in the tower. */

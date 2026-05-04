@@ -32,7 +32,10 @@ public class Mage extends Player {
 
     @Override
     public void render(GraphicsContext gc, double cameraX, double cameraY) {
-
+        double screenX = getX() - cameraX;
+        double screenY = getY() - cameraY;
+        gc.setFill(Color.RED);
+        gc.fillRect(screenX, screenY, getWidth(), getHeight());
     }
 
     @Override

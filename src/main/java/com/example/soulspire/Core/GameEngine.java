@@ -11,6 +11,7 @@ import com.example.soulspire.Entity.Projectile;
 import com.example.soulspire.Entity.Direction;
 import com.example.soulspire.Util.GameLogger;
 import com.example.soulspire.World.Floor;
+import com.example.soulspire.World.Tile;
 import com.example.soulspire.World.Tower;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -66,12 +67,20 @@ public class GameEngine {
         stateManager.setState(GameState.PLAYING);
         logger.info("New game started");
 
+        System.out.println("floor size:" + firstFloor.getWidthInTiles() + "x:" + firstFloor.getHeightInTiles());
+
     }
 
     /**
      * Main update method called every frame by the GameLoop.
      */
     public void update(double deltaTime) {
+        if (stateManager.getState() != GameState.PLAYING) {
+            return;
+        }
+
+        handlePlayerInput(deltaTime);
+        updateCamera();
 
     }
 
@@ -79,6 +88,18 @@ public class GameEngine {
      * Processes keyboard input for player movement, attacks, and abilities.
      */
     private void handlePlayerInput(double deltaTime) {
+        if (inputHandler.isKeyPressed(KeyCode.W)) {
+            tryMove(Direction.UP, deltaTime);
+        }
+        if (inputHandler.isKeyPressed(KeyCode.S)) {
+            tryMove(Direction.DOWN, deltaTime);
+        }
+        if (inputHandler.isKeyPressed(KeyCode.A)) {
+            tryMove(Direction.LEFT, deltaTime);
+        }
+        if (inputHandler.isKeyPressed(KeyCode.D)) {
+            tryMove(Direction.RIGHT, deltaTime);
+        }
 
     }
 
@@ -86,6 +107,28 @@ public class GameEngine {
      * Attempts to move the player, checking tile collisions first.
      */
     private void tryMove(Direction dir, double deltaTime) {
+
+        double distance = player.getMoveSpeed() * deltaTime;
+
+        double newX = player.getX();
+        double newY = player.getY();
+
+        switch (dir) {
+            case UP    -> newY -= distance;
+            case DOWN  -> newY += distance;
+            case LEFT  -> newX -= distance;
+            case RIGHT -> newX += distance;
+        }
+
+        Floor floor = tower.getCurrentFloor();
+        double centerX = newX + player.getWidth()  / 2.0;
+        double centerY = newY + player.getHeight() / 2.0;
+        Tile target = floor.getTileAtPixel(centerX, centerY);
+
+        if (target != null && target.isWalkable()) {
+            player.setX(newX);
+            player.setY(newY);
+        }
 
     }
 
@@ -100,7 +143,37 @@ public class GameEngine {
      * Centers the camera on the player.
      */
     private void updateCamera() {
+        if (player == null) {
+            return;
+        }
 
+        double viewW = GameConfig.WINDOW_WIDTH;
+        double viewH = GameConfig.WINDOW_HEIGHT;
+
+        cameraX = player.getCenterX() - viewW / 2.0;
+        cameraY = player.getCenterY() - viewH / 2.0;
+
+        Floor floor = tower.getCurrentFloor();
+        double worldW = floor.getWidthInTiles() * GameConfig.TILE_SIZE;
+        double worldH = floor.getHeightInTiles() * GameConfig.TILE_SIZE;
+
+        if (cameraX < 0) {
+            cameraX = 0;
+        }
+
+        if (cameraY < 0) {
+            cameraY = 0;
+        }
+
+        if (cameraX > worldW - viewW) {
+            cameraX = worldW - viewW;
+        }
+
+        if (cameraY > worldH - viewH){
+            cameraY = worldH - viewH;
+        }
+
+        System.out.println("camera=(" + cameraX + "," + cameraY + "player:" + player.getCenterX() + "," + player.getCenterY());
     }
 
     /**
@@ -116,7 +189,7 @@ public class GameEngine {
     public void render(GraphicsContext gc) {
 
         gc.setFill(Color.BLACK);
-        gc.fillRect(0,0, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
+        gc.fillRect(0,0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
 
         if (player == null) {
             return;

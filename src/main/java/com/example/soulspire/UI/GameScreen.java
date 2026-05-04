@@ -17,7 +17,9 @@ public class GameScreen extends StackPane {
     private GraphicsContext gc;
 
     public GameScreen(GameEngine engine) {
-        canvas = new Canvas(GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
+        canvas = new Canvas();
+        canvas.widthProperty().bind(widthProperty());
+        canvas.heightProperty().bind(heightProperty());
         gc = canvas.getGraphicsContext2D();
         hud = new HUDOverlay(engine);
 

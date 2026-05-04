@@ -23,20 +23,18 @@ public class Tower implements Saveable {
 
     /**
      * Generates all floors for the tower.
-     * Every {@link GameConfig#SAFE_ZONE_INTERVAL}th floor is a safe zone.
      */
     public void generateFloors() {
         floors.clear();
         for (int i = 0; i < GameConfig.TOTAL_FLOORS; i++) {
             boolean safe = (i > 0 && i % GameConfig.SAFE_ZONE_INTERVAL == 0);
-            Floor floor = new Floor(i, 20, 15, safe);
+            Floor floor = new Floor(i, GameConfig.FLOOR_WIDTH_TILES, GameConfig.FLOOR_HEIGHT_TILES, safe);
             floors.add(floor);
         }
     }
 
     /**
      * Advances to the next floor.
-     *
      * @return true if there is a next floor, false if this was the last one
      */
     public boolean advanceFloor() {

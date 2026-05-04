@@ -36,6 +36,8 @@ public class SoulspireApplication extends Application {
         stage.setTitle("SoulSpire");
         stage.setScene(scene);
         stage.show();
+        stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
 
         GameLoop loop = new GameLoop(engine, gameScreen.getGraphicsContext());
         loop.start();

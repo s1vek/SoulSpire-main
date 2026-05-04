@@ -6,8 +6,6 @@ import javafx.scene.paint.Color;
 
 /**
  * A single cell in the floor's tile grid.
- * Each tile has a {@link TileType} that determines whether it is walkable
- * and what happens when an entity steps on it.
  */
 public class Tile {
 
@@ -19,12 +17,6 @@ public class Tile {
 
     /**
      * Renders this tile at the given grid position.
-     *
-     * @param gc      graphics context
-     * @param gridX   grid column
-     * @param gridY   grid row
-     * @param cameraX camera x offset
-     * @param cameraY camera y offset
      */
     public void render(GraphicsContext gc, int gridX, int gridY, double cameraX, double cameraY) {
         double screenX = gridX * GameConfig.TILE_SIZE - cameraX;
@@ -37,7 +29,6 @@ public class Tile {
 
     /**
      * Returns a placeholder color for each tile type.
-     * Will be replaced by sprite rendering later.
      */
     private Color getTileColor() {
         return switch (type) {
