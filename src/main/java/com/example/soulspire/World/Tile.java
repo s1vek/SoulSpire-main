@@ -35,7 +35,7 @@ public class Tile {
             case FLOOR, SPAWN -> Color.DIMGRAY;
             case WALL -> Color.DARKSLATEGRAY;
             case DOOR -> Color.SIENNA;
-            case TRAP -> Color.DIMGRAY; // Looks like floor on purpose
+            case TRAP -> Color.DIMGRAY;
             case CHEST_SPOT -> Color.DIMGRAY;
             case SAFE_ZONE -> Color.DARKSEAGREEN;
             case LEVER -> Color.SLATEGRAY;

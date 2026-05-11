@@ -14,11 +14,6 @@ import java.util.List;
  * Abstract base class for all enemy types in the tower.
  * Each enemy has AI behavior, aggro detection, and a loot table.
  *
- * <p>Enemy stats scale with the floor number using
- * {@link GameConfig#DIFFICULTY_SCALE} — each floor increases
- * health and damage by a fixed percentage.</p>
- *
- * <p>Subclasses:</p>
  * <ul>
  *   <li>{@link MeleeEnemy} — chases and attacks at close range</li>
  *   <li>{@link RangedEnemy} — keeps distance and fires projectiles</li>
@@ -149,8 +144,6 @@ public abstract class Enemy extends LivingEntity {
     private static int scaleValue(int baseValue, int floor) {
         return (int) (baseValue * (1.0 + floor * GameConfig.DIFFICULTY_SCALE));
     }
-
-    // --- Getters ---
 
     public LootTable getLootTable() { return lootTable; }
     public void setLootTable(LootTable lootTable) { this.lootTable = lootTable; }

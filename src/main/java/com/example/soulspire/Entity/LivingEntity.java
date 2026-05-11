@@ -1,17 +1,13 @@
 package com.example.soulspire.Entity;
 
 import com.example.soulspire.Util.GameLogger;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * Abstract base class for entities that have health and can move, attack, and die.
- * Extends {@link Entity} with combat-related fields and movement logic.
- *
- * <p>Provides invulnerability frames (iframes) after taking damage to prevent
- * instant death from multiple simultaneous hits.</p>
- *
- * <p>Direct subclasses: {@link com.example.soulspire.Entity.Player.Player Player},
- * {@link com.example.soulspire.Entity.Enemy.Enemy Enemy}</p>
  */
+
 public abstract class LivingEntity extends Entity {
 
     private static final GameLogger logger = GameLogger.getLogger(LivingEntity.class);
@@ -74,7 +70,14 @@ public abstract class LivingEntity extends Entity {
      * Activates invulnerability frames after a successful hit.
      */
     public void takeDamage(int amount) {
-
+        if (invulnerable || isDead()) return;
+        int net = Math.max(0, amount - defense);
+        currentHealth = Math.max(0, currentHealth - net);
+        invulnerable = true;
+        invulnerabilityTimer = IFRAME_DURATION;
+        logger.info(getClass().getSimpleName() + " took " + net + " dmg ("
+                + currentHealth + "/" + maxHealth + ")");
+        if (isDead()) onDeath();
     }
 
     /**
@@ -83,7 +86,8 @@ public abstract class LivingEntity extends Entity {
      * @param amount health points to restore (must be positive)
      */
     public void heal(int amount) {
-
+        if (amount <= 0 || isDead()) return;
+        currentHealth = Math.min(maxHealth, currentHealth + amount);
     }
 
     /**
@@ -103,7 +107,7 @@ public abstract class LivingEntity extends Entity {
      * (e.g. enemies drop loot, players lose a life).
      */
     protected void onDeath() {
-
+        setActive(false);
     }
 
     /**
@@ -112,7 +116,13 @@ public abstract class LivingEntity extends Entity {
      * @param deltaTime time elapsed since last frame
      */
     protected void updateInvulnerability(double deltaTime) {
-
+        if (invulnerable) {
+            invulnerabilityTimer -= deltaTime;
+            if (invulnerabilityTimer <= 0) {
+                invulnerable = false;
+                invulnerabilityTimer = 0;
+            }
+        }
     }
 
     /**
@@ -124,14 +134,35 @@ public abstract class LivingEntity extends Entity {
 
     /**
      * Returns health as a fraction of max health (0.0 to 1.0) for the HP bar UI.
-     *
      * @return health percentage
      */
     public double getHealthPercent() {
         return (double) currentHealth / maxHealth;
     }
 
-    // --- Getters and setters ---
+    protected void renderWithHealthBar(GraphicsContext gc, double cameraX, double cameraY,
+                                       Color fillColor) {
+        Color effective = invulnerable ? Color.WHITE : fillColor;
+        drawBox(gc, cameraX, cameraY, effective, Color.BLACK);
+
+        if (currentHealth < maxHealth) {
+            double sx = x - cameraX;
+            double sy = y - cameraY;
+            double barW = width;
+            double barH = 4;
+            double barY = sy - barH - 3;
+            gc.setFill(Color.web("#1a0000"));
+            gc.fillRect(sx, barY, barW, barH);
+            double pct = getHealthPercent();
+            Color hpColor = pct > 0.5 ? Color.web("#3aaf3a") : pct > 0.25 ? Color.ORANGE : Color.RED;
+            gc.setFill(hpColor);
+            gc.fillRect(sx, barY, barW * pct, barH);
+            gc.setStroke(Color.BLACK);
+            gc.setLineWidth(1);
+            gc.strokeRect(sx + 0.5, barY + 0.5, barW - 1, barH - 1);
+        }
+    }
+
 
     public int getMaxHealth() { return maxHealth; }
     public void setMaxHealth(int maxHealth) { this.maxHealth = maxHealth; }

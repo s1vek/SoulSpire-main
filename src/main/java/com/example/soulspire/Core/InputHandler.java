@@ -64,7 +64,6 @@ public class InputHandler {
     public void update() {
         justPressedKeys.clear();
     }
-
     public Point2D getMousePosition() { return new Point2D(mouseX, mouseY); }
     public double getMouseX() { return mouseX; }
     public double getMouseY() { return mouseY; }

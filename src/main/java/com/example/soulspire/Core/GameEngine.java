@@ -201,8 +201,6 @@ public class GameEngine {
 
     }
 
-    // --- Getters for UI and other systems ---
-
     public Player getPlayer() { return player; }
     public Tower getTower() { return tower; }
     public GameStateManager getStateManager() { return stateManager; }

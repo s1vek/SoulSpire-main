@@ -74,11 +74,22 @@ public class Floor {
             }
         }
 
+        double worldW = widthInTiles * GameConfig.TILE_SIZE;
+        double worldH = heightInTiles * GameConfig.TILE_SIZE;
+        double viewW = GameConfig.WINDOW_WIDTH;
+        double viewH = GameConfig.WINDOW_HEIGHT;
+
         for (Entity entity : entities) {
-            if (entity.isActive()) {
-                entity.render(gc, cameraX, cameraY);
-            }
+            if (!entity.isActive()) continue;
+            if (entity.getX() < 0 || entity.getY() < 0
+                    || entity.getX() > worldW || entity.getY() > worldH) continue;
+            double ex = entity.getX() - cameraX;
+            double ey = entity.getY() - cameraY;
+            if (ex + entity.getWidth() < 0 || ex > viewW
+                    || ey + entity.getHeight() < 0 || ey > viewH) continue;
+            entity.render(gc, cameraX, cameraY);
         }
+
     }
 
     /**
@@ -88,7 +99,7 @@ public class Floor {
         if (gridX < 0 || gridX >= widthInTiles || gridY < 0 || gridY >= heightInTiles) {
             return null;
         }
-        return grid[gridX < widthInTiles && gridY < heightInTiles ? gridY : 0][gridX];
+        return grid[gridY][gridX];
     }
 
 
@@ -128,11 +139,15 @@ public class Floor {
         return result;
     }
 
+    public void setTileAt(int x, int y, TileType type) {
+        if (x >= 0 && x < widthInTiles && y >= 0 && y < heightInTiles) {
+            grid[y][x] = new Tile(type);
+        }
+    }
 
     public void addEntity(Entity entity) { entities.add(entity); }
     public void removeEntity(Entity entity) { entities.remove(entity); }
     public List<Entity> getEntities() { return entities; }
-    public void setTileAt(int x, int y, TileType type) { grid[y][x] = new Tile(type); }
     public int getFloorNumber() { return floorNumber; }
     public boolean isSafeZone() { return isSafeZone; }
     public boolean isCompleted() { return completed; }

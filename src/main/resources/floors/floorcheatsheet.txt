@@ -1,0 +1,19 @@
+. floor
+# wall
+= safe zone
+X exit
+D door
+T trap
+L lever
+B destructible wall
+
+m melee enemy
+r ranged enemy
+G chest guardian
+c free chest
+S blacksmith
+$ merchant
+K boss
+@ players spawn
+
+Dimensions - 60r x 40l

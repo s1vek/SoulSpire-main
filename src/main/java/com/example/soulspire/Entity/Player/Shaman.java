@@ -12,6 +12,8 @@ import java.util.Map;
 
 public class Shaman extends Player {
 
+    private static final Color BODY_COLOR = Color.MEDIUMPURPLE;
+
     public Shaman(String name, double x, double y) {
         super(name, PlayerType.SHAMAN, x, y, 32, 32);
     }
@@ -28,10 +30,7 @@ public class Shaman extends Player {
 
     @Override
     public void render(GraphicsContext gc, double cameraX, double cameraY) {
-        double screenX = getX() - cameraX;
-        double screenY = getY() - cameraY;
-        gc.setFill(Color.RED);
-        gc.fillRect(screenX, screenY, getWidth(), getHeight());
+        renderWithHealthBar(gc, cameraX, cameraY, BODY_COLOR);
     }
 
     @Override

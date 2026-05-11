@@ -6,12 +6,7 @@ import javafx.scene.image.Image;
 /**
  * Abstract base class for all character abilities.
  * Each of the four character classes has 3 abilities (mapped to keys 1, 2, 3),
- * making 12 concrete implementations total.
- *
  * <p>Every ability has a cooldown timer that prevents immediate reuse.
- * The {@link #execute} method contains the ability's unique logic — spawning
- * projectiles, applying buffs, dealing area damage, etc.</p>
- *
  * <p>Concrete abilities by character:</p>
  * <pre>
  * Warrior:  ChargeAbility, BladewhirlAbility, EnrageAbility
@@ -60,13 +55,6 @@ public abstract class Ability {
     /**
      * Executes the ability's effect. Called when the player presses the ability key
      * and the ability is off cooldown.
-     *
-     * <p>The targetX/targetY parameters represent the mouse cursor position,
-     * used by ranged and directional abilities for aiming. Melee and self-buff
-     * abilities may ignore these parameters.</p>
-     *
-     * <p>Implementations must call {@link #resetCooldown()} at the end.</p>
-     *
      * @param caster  the player using this ability
      * @param targetX mouse X position in world coordinates
      * @param targetY mouse Y position in world coordinates
@@ -107,8 +95,6 @@ public abstract class Ability {
     protected void resetCooldown() {
         currentCooldown = cooldown;
     }
-
-    // --- Getters ---
 
     public String getName() { return name; }
     public String getDescription() { return description; }

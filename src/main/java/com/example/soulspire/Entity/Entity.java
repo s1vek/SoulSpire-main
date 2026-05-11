@@ -2,6 +2,10 @@ package com.example.soulspire.Entity;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+
+
+import java.awt.*;
 
 
 abstract public class Entity {
@@ -70,8 +74,23 @@ abstract public class Entity {
      * @return distance in pixels
      */
     public double distanceTo(Entity other) {
-        return x;
+        double dx = getCenterX() - other.getCenterX();
+        double dy = getCenterY() - other.getCenterY();
+        return Math.sqrt(dx * dx + dy * dy);
     }
+
+    protected void drawBox(GraphicsContext gc, double cameraX, double cameraY, Color fill, Color border) {
+        double sx = x - cameraX;
+        double sy = y - cameraY;
+        gc.setFill(fill);
+        gc.fillRect(sx, sy, width, height);
+        if (border != null) {
+            gc.setStroke(border);
+            gc.setLineWidth(1);
+            gc.strokeRect(sx + 0.5, sy + 0.5, width - 1, height - 1);
+        }
+    }
+
 
     /**
      * @return center X coordinate of this entity

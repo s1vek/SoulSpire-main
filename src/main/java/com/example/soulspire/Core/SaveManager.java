@@ -13,11 +13,8 @@ import java.util.Map;
 /**
  * Handles saving and loading game state to/from a JSON file.
  * Saves player stats, inventory, and tower progress.
- *
- * <p>Auto-save is triggered when entering a safe zone, using a
- * {@link javafx.concurrent.Task} to avoid blocking the UI thread
- * (required by assignment for threading demonstration).</p>
  */
+
 public class SaveManager {
 
     private static final GameLogger logger = GameLogger.getLogger(SaveManager.class);

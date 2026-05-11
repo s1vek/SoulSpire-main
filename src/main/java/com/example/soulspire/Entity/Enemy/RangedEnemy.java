@@ -9,11 +9,12 @@ import javafx.scene.paint.Color;
  * Enemy that maintains distance and fires projectiles at the player.
  * Retreats when the player gets too close.
  */
+
 public class RangedEnemy extends Enemy {
 
     private double projectileSpeed;
     private double preferredDistance;
-    /** Stored reference to the last fired projectile for floor entity addition. */
+    private static final Color BODY_COLOR = Color.DARKORANGE;
     private Projectile lastFiredProjectile;
 
     public RangedEnemy(double x, double y, int floorNumber) {
@@ -60,6 +61,10 @@ public class RangedEnemy extends Enemy {
 
     @Override
     public void render(GraphicsContext gc, double cameraX, double cameraY) {
-
+        renderWithHealthBar(gc, cameraX, cameraY, BODY_COLOR);
+        double sx = x - cameraX + width / 2 - 3;
+        double sy = y - cameraY + height / 2 - 3;
+        gc.setFill(Color.BLACK);
+        gc.fillOval(sx, sy, 6, 6);
     }
 }

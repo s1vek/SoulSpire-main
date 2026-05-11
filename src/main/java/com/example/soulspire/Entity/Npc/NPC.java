@@ -4,21 +4,13 @@ import com.example.soulspire.Entity.Entity;
 import com.example.soulspire.Entity.Interactable;
 import com.example.soulspire.Entity.Player.Player;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 /**
  * Abstract base class for non-player characters found in safe zones.
- * NPCs cannot move or take damage — they stand in place and wait
- * for the player to interact with them using the E key.
- *
- * <p>Implements {@link Interactable} so that {@link Player#interact} can
- * detect and trigger NPC dialogue/actions.</p>
- *
- * <p>Subclasses:</p>
- * <ul>
- *   <li>{@link Blacksmith} — opens crafting UI to forge equipment</li>
- *   <li>{@link Merchant} — opens shop UI to buy/sell items</li>
- * </ul>
  */
+
 public abstract class NPC extends Entity implements Interactable {
 
     /** Default interaction range for all NPCs in pixels. */
@@ -59,21 +51,27 @@ public abstract class NPC extends Entity implements Interactable {
      */
     @Override
     public void render(GraphicsContext gc, double cameraX, double cameraY) {
+        renderNpc(gc, cameraX, cameraY, Color.OLIVEDRAB);
+    }
 
+    protected void renderNpc(GraphicsContext gc, double cameraX, double cameraY, Color fill) {
+        drawBox(gc, cameraX, cameraY, fill, Color.BLACK);
+        double sx = x - cameraX;
+        double sy = y - cameraY;
+        gc.setFill(Color.WHITE);
+        gc.setFont(Font.font(11));
+        double textW = name.length() * 6.0;
+        gc.fillText(name, sx + (width - textW) / 2.0, sy - 5);
     }
 
     @Override
     public double getInteractionRange() {
         return DEFAULT_INTERACTION_RANGE;
     }
-
     @Override
     public boolean canInteract() {
         return true;
     }
-
-    // --- Getters ---
-
     public String getName() { return name; }
     public String[] getDialogueLines() { return dialogueLines; }
 }

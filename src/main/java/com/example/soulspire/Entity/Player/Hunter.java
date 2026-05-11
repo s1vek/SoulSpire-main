@@ -19,6 +19,8 @@ public class Hunter extends Player {
     private static final double ARROW_SPEED = 500;
     private static final double ARROW_RANGE = 600;
 
+    private static final Color BODY_COLOR = Color.FORESTGREEN;
+
     public Hunter(String name, double x, double y) {
         super(name, PlayerType.HUNTER, x, y, 32, 32);
     }
@@ -35,10 +37,7 @@ public class Hunter extends Player {
 
     @Override
     public void render(GraphicsContext gc, double cameraX, double cameraY) {
-        double screenX = getX() - cameraX;
-        double screenY = getY() - cameraY;
-        gc.setFill(Color.RED);
-        gc.fillRect(screenX, screenY, getWidth(), getHeight());
+        renderWithHealthBar(gc, cameraX, cameraY, BODY_COLOR);
     }
 
     @Override

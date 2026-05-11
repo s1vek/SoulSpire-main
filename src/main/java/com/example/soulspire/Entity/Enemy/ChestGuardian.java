@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 public class ChestGuardian extends Enemy {
 
     private Chest guardedChest;
+    private static final Color BODY_COLOR = Color.INDIGO;
 
     /**
      * Creates a chest guardian near the given chest.
@@ -42,11 +43,18 @@ public class ChestGuardian extends Enemy {
 
     @Override
     protected void onDeath() {
-
+        super.onDeath();
+        if (guardedChest != null) {
+            guardedChest.setGuardianDefeated(true);
+        }
     }
 
     @Override
     public void render(GraphicsContext gc, double cameraX, double cameraY) {
-
+        renderWithHealthBar(gc, cameraX, cameraY, BODY_COLOR);
+        double cx = x - cameraX + width / 2;
+        double cy = y - cameraY + height / 2;
+        gc.setFill(Color.GOLD);
+        gc.fillPolygon(new double[]{cx, cx + 5, cx, cx - 5}, new double[]{cy - 8, cy, cy + 8, cy}, 4);
     }
 }

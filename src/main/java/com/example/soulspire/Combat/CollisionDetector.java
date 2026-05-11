@@ -12,6 +12,7 @@ import java.util.List;
  * Provides static collision detection methods for entity-entity
  * and entity-tile interactions.
  */
+
 public class CollisionDetector {
 
     private CollisionDetector() {}

@@ -8,7 +8,10 @@ import javafx.scene.paint.Color;
  * Basic enemy that chases the player and attacks at close range.
  * The most common enemy type in the tower.
  */
+
 public class MeleeEnemy extends Enemy {
+
+    private static final Color BODY_COLOR = Color.DARKRED;
 
     /**
      * Creates a melee enemy with default stats scaled by floor number.
@@ -36,6 +39,6 @@ public class MeleeEnemy extends Enemy {
 
     @Override
     public void render(GraphicsContext gc, double cameraX, double cameraY) {
-
+        renderWithHealthBar(gc, cameraX, cameraY, BODY_COLOR);
     }
 }

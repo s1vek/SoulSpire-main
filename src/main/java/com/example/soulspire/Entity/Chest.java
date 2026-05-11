@@ -16,6 +16,11 @@ public class Chest extends Entity implements Interactable {
     private static final GameLogger logger = GameLogger.getLogger(Chest.class);
     private static final double INTERACTION_RANGE = 60.0;
 
+    private static final Color LOCKED_COLOR = Color.web("#5a4530");
+    private static final Color UNLOCKED_COLOR = Color.web("#b8862e");
+    private static final Color OPEN_COLOR = Color.web("#3a3a3a");
+
+
     private SoulEcho reward;
     private boolean opened;
     private boolean guardianDefeated;
@@ -56,6 +61,18 @@ public class Chest extends Entity implements Interactable {
 
     @Override
     public void render(GraphicsContext gc, double cameraX, double cameraY) {
+        Color fill = opened ? OPEN_COLOR : (guardianDefeated ? UNLOCKED_COLOR : LOCKED_COLOR);
+        drawBox(gc, cameraX, cameraY, fill, Color.BLACK);
+
+        double sx = x - cameraX;
+        double sy = y - cameraY;
+        gc.setFill(Color.GOLD);
+        gc.fillRect(sx + 2, sy + height / 2 - 2, width - 4, 4);
+        if (!opened) {
+            gc.setFill(guardianDefeated ? Color.YELLOW : Color.DARKGRAY);
+            gc.fillOval(sx + width / 2 - 3, sy + height / 2 - 3, 6, 6);
+        }
+
 
     }
 
