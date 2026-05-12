@@ -59,6 +59,10 @@ public abstract class Player extends LivingEntity implements Saveable {
 
     protected CombatSystem combatSystem;
 
+    public boolean enranged = false;
+
+    public boolean frozen = false;
+
     /**
      * Creates a new player with stats derived from the given character type.
      *
@@ -215,8 +219,6 @@ public abstract class Player extends LivingEntity implements Saveable {
     public void loadSaveData(Map<String, Object> data) {
 
     }
-
-    // --- Getters ---
 
     public String getName() { return name; }
     public PlayerType getPlayerType() { return playerType; }

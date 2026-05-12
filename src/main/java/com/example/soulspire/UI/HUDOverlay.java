@@ -75,16 +75,14 @@ public class HUDOverlay extends BorderPane {
 
             slotCdLabels[i] = new Label("");
             slotCdLabels[i].setStyle(
-                    "-fx-text-fill: #f0e0b0; -fx-font-size: 20; -fx-font-weight: bold; " +
+                    "-fx-text-fill: #ffffff; -fx-font-size: 20; -fx-font-weight: bold; " +
                             "-fx-font-family: 'MedievalSharp';");
 
             StackPane slot = new StackPane(slotIcons[i], slotCdOverlays[i], slotCdLabels[i]);
             slot.setPrefSize(56, 56);
 
             slotNames[i] = new Label("");
-            slotNames[i].setStyle(
-                    "-fx-text-fill: #d4af6c; -fx-font-size: 11; " +
-                            "-fx-font-family: 'MedievalSharp';");
+            slotNames[i].setStyle("-fx-text-fill: #ffffff; -fx-font-size: 11; " + "-fx-font-family: 'MedievalSharp';");
 
             VBox col = new VBox(2, slot, slotNames[i]);
             col.setAlignment(Pos.CENTER);

@@ -33,6 +33,8 @@ public abstract class Enemy extends LivingEntity {
     /** Time between attacks in seconds. */
     protected double attackCooldown;
 
+    protected double stunTimer = 0;
+
     /** Remaining time until the next attack. */
     protected double currentAttackCooldown;
 
@@ -151,6 +153,11 @@ public abstract class Enemy extends LivingEntity {
             gc.strokeRect(screenX - 1, screenY - 1, width + 2, height + 2);
         }
 
+        if (isStunned()) {
+            gc.setFill(Color.CYAN);
+            gc.fillOval(screenX + width / 2 - 4, screenY - 18, 8, 8);
+        }
+
         double hpPct = (double) currentHealth / maxHealth;
         gc.setFill(Color.BLACK);
         gc.fillRect(screenX, screenY - 8, width, 4);
@@ -161,6 +168,9 @@ public abstract class Enemy extends LivingEntity {
 
     @Override
     public void update(double deltaTime) {
+        if(stunTimer > 0) {
+            stunTimer -= deltaTime;
+        }
         if (currentAttackCooldown > 0) {
             currentAttackCooldown =- deltaTime;
         }
@@ -177,6 +187,22 @@ public abstract class Enemy extends LivingEntity {
      */
     private static int scaleValue(int baseValue, int floor) {
         return (int) (baseValue * (1.0 + floor * GameConfig.DIFFICULTY_SCALE));
+    }
+
+    /**
+     * Stuns a enemy.
+     * @param duration
+     */
+    public void applyStun(double duration) {
+        if (duration > stunTimer) stunTimer = duration;
+    }
+
+    /**
+     * Check if enemy is stunned
+     * @return
+     */
+    public boolean isStunned() {
+        return stunTimer > 0;
     }
 
     public LootTable getLootTable() { return lootTable; }

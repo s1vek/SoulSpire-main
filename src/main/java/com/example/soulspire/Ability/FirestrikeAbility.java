@@ -14,10 +14,37 @@ public class FirestrikeAbility extends Ability {
 
     public FirestrikeAbility() {
         super("Firestrike", "Devastating fire-enhanced weapon strike", 10.0, AbilityType.OFFENSIVE);
+        this.icon = loadIcon("/com/example/soulspire/images/firestrike.png");
     }
 
     @Override
     public void execute(Player caster, double targetX, double targetY) {
+        if (currentCooldown > 0) {
+            return;
+        }
+        var floor = caster.getCurrentFloor();
+        var combat = caster.getCombatSystem();
+        if (floor == null || combat == null) {
+            return;
+        }
+
+        double dx = targetX - caster.getCenterX();
+        double dy = targetY - caster.getCenterY();
+        double dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 0.001) {
+            return;
+        }
+
+        double dirX = dx / dist;
+        double dirY = dy / dist;
+        double centerX = caster.getCenterX() + dirX * 40;
+        double centerY = caster.getCenterY() + dirY * 40;
+
+        int damage = (int)(caster.getAttackDamage() * DAMAGE_MULTIPLIER);
+        combat.processAreaDamage(centerX, centerY, RANGE, damage,
+                floor.getEntities(), caster);
+
+        resetCooldown();
 
     }
 }

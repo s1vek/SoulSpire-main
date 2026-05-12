@@ -3,6 +3,7 @@ package com.example.soulspire.Ability;
 import com.example.soulspire.Ability.Ability;
 import com.example.soulspire.Ability.AbilityType;
 import com.example.soulspire.Entity.Player.Player;
+import com.example.soulspire.Entity.Trap;
 
 /**
  * Hunter ability 2: Places an invisible trap at the player's position.
@@ -15,10 +16,22 @@ public class FrostTrapAbility extends Ability {
 
     public FrostTrapAbility() {
         super("Frost Trap", "Place a trap that freezes enemies", 15.0, AbilityType.UTILITY);
+        this.icon = loadIcon("/com/example/soulspire/images/trap.png");
     }
 
     @Override
     public void execute(Player caster, double targetX, double targetY) {
+        if (currentCooldown > 0) {
+            return;
+        }
+        if (caster.getCurrentFloor() == null) {
+            return;
+        }
+
+        com.example.soulspire.Entity.Trap trap = new com.example.soulspire.Entity.Trap(caster.getCenterX(), caster.getCenterY(), TRAP_RADIUS, FREEZE_DURATION, caster.getCurrentFloor());
+        caster.getCurrentFloor().addEntity(trap);
+
+        resetCooldown();
 
     }
 }

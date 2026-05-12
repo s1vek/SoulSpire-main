@@ -3,9 +3,9 @@ package com.example.soulspire.Entity.Player;
 public enum PlayerType {
 
     WARRIOR("Warrior", 150, 20, 15, 100),
-    SHAMAN("Shaman", 120, 18, 10, 100),
-    MAGE("Mage", 80, 25, 5, 100),
-    HUNTER("Hunter", 100, 22, 8, 100);
+    SHAMAN("Shaman", 90, 15, 10, 100),
+    MAGE("Mage", 70, 18, 5, 100),
+    HUNTER("Hunter", 80, 12, 8, 100);
 
     private final String displayName;
     private final int baseHealth;

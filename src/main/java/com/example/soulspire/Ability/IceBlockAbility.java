@@ -17,15 +17,31 @@ public class IceBlockAbility extends Ability {
     public IceBlockAbility() {
         super("Ice Block", "Become immune to damage for 5 seconds", 20.0, AbilityType.DEFENSIVE);
         this.active = false;
+        this.icon = loadIcon("/com/example/soulspire/images/iceblock.png");
     }
 
     @Override
     public void execute(Player caster, double targetX, double targetY) {
-
+        if (currentCooldown > 0 || active) {
+            return;
+        }
+        active = true;
+        casterRef = caster;
+        remainingDuration = DURATION;
+        caster.frozen = true;
+        resetCooldown();
     }
 
     @Override
     public void update(double deltaTime) {
-
+        if (currentCooldown > 0) currentCooldown -= deltaTime;
+        if (active) {
+            remainingDuration -= deltaTime;
+            if (remainingDuration <= 0) {
+                if (casterRef != null) casterRef.frozen = false;
+                active = false;
+                casterRef = null;
+            }
+        }
     }
 }

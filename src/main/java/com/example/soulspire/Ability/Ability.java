@@ -17,7 +17,7 @@ import javafx.scene.image.Image;
  */
 public abstract class Ability {
 
-    /** Human-readable ability name (e.g. "Charge", "Ice Block"). */
+    /** Ability name */
     protected String name;
 
     /** Short description of what the ability does, shown in tooltips. */
@@ -29,10 +29,10 @@ public abstract class Ability {
     /** Remaining cooldown time. Ability is ready when this reaches 0. */
     protected double currentCooldown;
 
-    /** Categorization of the ability's purpose (offensive, defensive, etc.). */
+    /** Categorization of the ability's purpose. */
     protected AbilityType abilityType;
 
-    /** Icon displayed in the HUD ability bar. May be null during development. */
+    /** Icon displayed in the HUD ability bar. */
     protected Image icon;
 
     /**
@@ -73,6 +73,7 @@ public abstract class Ability {
     }
 
     /**
+     * Checks if cooldown is ready or not.
      * @return true if the ability can be used (cooldown has elapsed)
      */
     public boolean isReady() {

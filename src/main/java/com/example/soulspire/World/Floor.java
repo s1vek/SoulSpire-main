@@ -1,8 +1,11 @@
 package com.example.soulspire.World;
+import com.example.soulspire.Combat.CollisionDetector;
 import com.example.soulspire.Core.GameConfig;
 import com.example.soulspire.Entity.Enemy.Enemy;
 import com.example.soulspire.Entity.Entity;
+import com.example.soulspire.Entity.LivingEntity;
 import com.example.soulspire.Entity.Player.Player;
+import com.example.soulspire.Entity.Projectile;
 import javafx.scene.canvas.GraphicsContext;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -61,7 +64,55 @@ public class Floor {
                 entity.update(deltaTime);
             }
         }
+        for (Entity e : new ArrayList<>(entities)) {
+            if (e instanceof Projectile p && p.isActive()) {
+                checkProjectileHit(p, player);
+            }
+        }
         removeInactiveEntities();
+    }
+
+    private void checkProjectileHit(Projectile p, Player player) {
+        Tile t = getTileAtPixel(p.getCenterX(), p.getCenterY());
+        if (t != null && !t.isWalkable()) {
+            explode(p, player);
+            p.setActive(false);
+            return;
+        }
+
+        for (Entity e : entities) {
+            if (e == p.getOwner() || e == p || !e.isActive()) continue;
+            if (!(e instanceof LivingEntity living)) continue;
+            if (CollisionDetector.checkCollision(p,e)) {
+                living.takeDamage(p.getDamage());
+                explode(p, player);
+                p.setActive(false);
+                return;
+            }
+        }
+
+        if (player != null && p.getOwner() != player && CollisionDetector.checkCollision(p, player)) {
+            player.takeDamage(p.getDamage());
+            explode(p, player);
+            p.setActive(false);
+        }
+    }
+
+    private void explode(Projectile p, Player player) {
+        double r = p.getExplosionRadius();
+        if (r <= 0) return;
+        int dmg = p.getDamage();
+        for (Entity e : entities) {
+            if (e == p.getOwner() || !e.isActive() || !(e instanceof LivingEntity living)) continue;
+            double dx = e.getCenterX() - p.getCenterX();
+            double dy = e.getCenterY() - p.getCenterY();
+            if (dx * dx + dy * dy <= r * r) living.takeDamage(dmg);
+        }
+        if (player != null && p.getOwner() != player) {
+            double dx = player.getCenterX() - p.getCenterX();
+            double dy = player.getCenterY() - p.getCenterY();
+            if (dx * dx + dy * dy <= r * r) player.takeDamage(dmg);
+        }
     }
 
     /**

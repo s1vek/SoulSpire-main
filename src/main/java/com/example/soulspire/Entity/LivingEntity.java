@@ -174,7 +174,9 @@ public abstract class LivingEntity extends Entity {
     public int getMaxHealth() { return maxHealth; }
     public void setMaxHealth(int maxHealth) { this.maxHealth = maxHealth; }
     public int getCurrentHealth() { return currentHealth; }
-    public void setCurrentHealth(int currentHealth) { this.currentHealth = currentHealth; }
+    public void setCurrentHealth(int currentHealth) {
+        this.currentHealth = Math.min(currentHealth, maxHealth);
+    }
     public int getAttackDamage() { return attackDamage; }
     public void setAttackDamage(int attackDamage) { this.attackDamage = attackDamage; }
     public int getDefense() { return defense; }
@@ -185,4 +187,5 @@ public abstract class LivingEntity extends Entity {
     public void setFacing(Direction facing) { this.facing = facing; }
     public boolean isInvulnerable() { return invulnerable; }
     public void setInvulnerable(boolean invulnerable) { this.invulnerable = invulnerable; }
+
 }

@@ -18,10 +18,27 @@ public class HealingTotemAbility extends Ability {
 
     public HealingTotemAbility() {
         super("Healing Totem", "Place a totem that heals you nearby", 18.0, AbilityType.UTILITY);
+        this.icon = loadIcon("/com/example/soulspire/images/healtotem.png");
     }
 
     @Override
     public void execute(Player caster, double targetX, double targetY) {
+        if (currentCooldown > 0) {
+            return;
+        }
+        if (caster.getCurrentFloor() == null) {
+            return;
+        }
+
+        com.example.soulspire.Entity.Totem totem = new com.example.soulspire.Entity.Totem(
+                caster.getCenterX() - 12, caster.getCenterY() - 12,
+                HEAL_AMOUNT, HEAL_INTERVAL,
+                RADIUS, DURATION,
+                caster
+        );
+        caster.getCurrentFloor().addEntity(totem);
+
+        resetCooldown();
 
     }
 }

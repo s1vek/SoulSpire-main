@@ -17,6 +17,7 @@ public class Projectile extends Entity {
     private double maxRange;
     private double distanceTraveled;
     private Color color;
+    private double explosionRadius = 0;
 
     /**
      * Creates a new projectile.
@@ -39,7 +40,6 @@ public class Projectile extends Entity {
         this.distanceTraveled = 0;
         this.color = Color.YELLOW;
 
-        // Calculate normalized direction vector
         double dx = targetX - x;
         double dy = targetY - y;
         double length = Math.sqrt(dx * dx + dy * dy);
@@ -54,15 +54,25 @@ public class Projectile extends Entity {
 
     @Override
     public void update(double deltaTime) {
-
+        double dx = velocityX * deltaTime;
+        double dy = velocityY * deltaTime;
+        setX(getX() + dx);
+        setY(getY() + dy);
+        distanceTraveled += Math.hypot(dx, dy);
+        if (distanceTraveled >= maxRange) {
+            active = false;
+        }
     }
 
     @Override
     public void render(GraphicsContext gc, double cameraX, double cameraY) {
-
+        gc.setFill(color);
+        gc.fillOval(getX() - cameraX, getY() - cameraY, getWidth(), getHeight());
     }
 
     public int getDamage() { return damage; }
     public Entity getOwner() { return owner; }
     public void setColor(Color color) { this.color = color; }
+    public double getExplosionRadius() { return explosionRadius; }
+    public void setExplosionRadius(double r) { this.explosionRadius = r; }
 }

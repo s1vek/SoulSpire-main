@@ -44,11 +44,45 @@ public class Totem extends Entity {
 
     @Override
     public void update(double deltaTime) {
+        if (owner == null) {
+            active = false;
+            return;
+        }
+        remainingDuration -= deltaTime;
+        if (remainingDuration <= 0) {
+            active = false;
+            return;
+        }
 
+        healTimer += deltaTime;
+        if (healTimer >= healInterval) {
+            healTimer = 0;
+            double dx = owner.getCenterX() - getCenterX();
+            double dy = owner.getCenterY() - getCenterY();
+            if (dx * dx + dy * dy <= radius * radius) {
+                owner.heal(healAmount);
+            }
+        }
     }
 
     @Override
     public void render(GraphicsContext gc, double cameraX, double cameraY) {
+        double sx = getX() - cameraX;
+        double sy = getY() - cameraY;
+
+        gc.setStroke(Color.LIMEGREEN.deriveColor(0, 1, 1, 0.3));
+        gc.setLineWidth(1);
+        double r = 100;
+        gc.strokeOval(getCenterX() - cameraX - r, getCenterY() - cameraY - r, r * 2, r * 2);
+
+        gc.setFill(Color.LIMEGREEN);
+        gc.fillRect(sx, sy, getWidth(), getHeight());
+
+        gc.setFill(Color.WHITE);
+        gc.setStroke(Color.LIMEGREEN);
+        double bar = getWidth();
+        double pct = remainingDuration / duration;
+        gc.fillRect(sx, sy - 6, bar * pct, 3);
 
     }
 

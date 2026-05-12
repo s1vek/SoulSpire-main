@@ -39,8 +39,11 @@ public class MeleeEnemy extends Enemy {
 
     @Override
     public void updateAI(Player target, double deltaTime) {
-        checkAggro(target);
+        if (isStunned()) {
+            return;
+        }
 
+        checkAggro(target);
         if (!aggroed) {
             return;
         }

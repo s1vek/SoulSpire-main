@@ -16,19 +16,56 @@ public class EnrageAbility extends Ability {
     private double remainingDuration;
     private int originalDamage;
     private int originalMaxHealth;
+    private Player activeCaster;
 
     public EnrageAbility() {
         super("Enrage", "Increase DMG and HP for 10 seconds", 25.0, AbilityType.UTILITY);
         this.active = false;
+        this.icon = loadIcon("/com/example/soulspire/images/enrage.png");
     }
 
     @Override
     public void execute(Player caster, double targetX, double targetY) {
+        if (currentCooldown > 0 || active) {
+            return;
+        }
+
+        active = true;
+        activeCaster = caster;
+        remainingDuration = DURATION;
+
+        originalDamage = caster.getAttackDamage();
+        originalMaxHealth = caster.getMaxHealth();
+
+        caster.setAttackDamage((int) (originalDamage * DAMAGE_BOOST));
+        caster.setMaxHealth(originalMaxHealth + HEALTH_BOOST);
+        caster.heal(HEALTH_BOOST);
+        caster.enranged = true;
+
+        resetCooldown();
 
     }
 
     @Override
     public void update(double deltaTime) {
+        if (currentCooldown > 0) currentCooldown -= deltaTime;
 
+        if (active) {
+            remainingDuration -= deltaTime;
+            if (remainingDuration <= 0) {
+                deactivate();
+            }
+        }
+    }
+
+    private void deactivate() {
+        if (activeCaster != null) {
+            activeCaster.setAttackDamage(originalDamage);
+            activeCaster.setMaxHealth(originalMaxHealth);
+            activeCaster.setCurrentHealth(Math.min(activeCaster.getCurrentHealth(), originalMaxHealth));
+            activeCaster.enranged = false;
+        }
+        active = false;
+        activeCaster = null;
     }
 }
