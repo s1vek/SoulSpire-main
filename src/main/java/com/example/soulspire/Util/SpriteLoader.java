@@ -61,7 +61,6 @@ public class SpriteLoader {
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                // Use WritableImage to extract sub-regions
                 javafx.scene.image.WritableImage frame =
                         new javafx.scene.image.WritableImage(
                                 sheet.getPixelReader(),

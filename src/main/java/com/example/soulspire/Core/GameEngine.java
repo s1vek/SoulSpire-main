@@ -9,6 +9,7 @@ import com.example.soulspire.Entity.LivingEntity;
 import com.example.soulspire.Entity.Player.*;
 import com.example.soulspire.Entity.Projectile;
 import com.example.soulspire.Entity.Direction;
+import com.example.soulspire.UI.HUDOverlay;
 import com.example.soulspire.Util.GameLogger;
 import com.example.soulspire.World.Floor;
 import com.example.soulspire.World.Tile;
@@ -31,6 +32,7 @@ public class GameEngine {
     private GameStateManager stateManager;
     private CombatSystem combatSystem;
     private InputHandler inputHandler;
+    private HUDOverlay hud;
     private double cameraX;
     private double cameraY;
 
@@ -64,9 +66,10 @@ public class GameEngine {
             case MAGE -> new Mage(name, spawnx, spawny);
         };
 
+        player.setCurrentFloor(firstFloor);
+        player.setCombatSystem(combatSystem);
         stateManager.setState(GameState.PLAYING);
         logger.info("New game started");
-
         System.out.println("floor size:" + firstFloor.getWidthInTiles() + "x:" + firstFloor.getHeightInTiles());
 
     }
@@ -80,7 +83,19 @@ public class GameEngine {
         }
 
         handlePlayerInput(deltaTime);
+
+        Floor currFloor = tower.getCurrentFloor();
+        currFloor.update(deltaTime, player);
+
+        if (player != null) {
+            player.update(deltaTime);
+        }
+
         updateCamera();
+
+        if (hud != null) {
+            hud.update();
+        }
 
     }
 
@@ -99,6 +114,26 @@ public class GameEngine {
         }
         if (inputHandler.isKeyPressed(KeyCode.D)) {
             tryMove(Direction.RIGHT, deltaTime);
+        }
+
+        if (player == null) {
+            return;
+        }
+
+        double mouseWorldX = inputHandler.getMouseX() + cameraX;
+        double mouseWorldY = inputHandler.getMouseY() + cameraY;
+
+        if (inputHandler.isKeyPressed(KeyCode.SPACE)) {
+            player.attack(mouseWorldX, mouseWorldY);
+        }
+        if (inputHandler.isKeyPressed(KeyCode.DIGIT1)) {
+            player.useAbility(0, mouseWorldX, mouseWorldY);
+        }
+        if (inputHandler.isKeyPressed(KeyCode.DIGIT2)) {
+            player.useAbility(1, mouseWorldX, mouseWorldY);
+        }
+        if (inputHandler.isKeyPressed(KeyCode.DIGIT3)) {
+            player.useAbility(2, mouseWorldX, mouseWorldY);
         }
 
     }
@@ -173,7 +208,6 @@ public class GameEngine {
             cameraY = worldH - viewH;
         }
 
-        System.out.println("camera=(" + cameraX + "," + cameraY + "player:" + player.getCenterX() + "," + player.getCenterY());
     }
 
     /**
@@ -199,6 +233,27 @@ public class GameEngine {
         currentFloor.render(gc, cameraX, cameraY);
         player.render(gc, cameraX, cameraY);
 
+        drawAimIndicator(gc);
+
+    }
+
+    private void drawAimIndicator(GraphicsContext gc) {
+        double px = player.getCenterX() - cameraX;
+        double py = player.getCenterY() - cameraY;
+        double mx = inputHandler.getMouseX();
+        double my = inputHandler.getMouseY();
+
+        double dx = mx - px;
+        double dy = my - py;
+        double dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 0.001) return;
+
+        double dirX = dx / dist;
+        double dirY = dy / dist;
+
+        gc.setStroke(Color.WHITE);
+        gc.setLineWidth(2);
+        gc.strokeLine(px, py, px + dirX * 25, py + dirY * 25);
     }
 
     public Player getPlayer() { return player; }
@@ -206,4 +261,5 @@ public class GameEngine {
     public GameStateManager getStateManager() { return stateManager; }
     public CombatSystem getCombatSystem() { return combatSystem; }
     public InputHandler getInputHandler() { return inputHandler; }
+    public void setHud(HUDOverlay hud) { this.hud = hud; }
 }

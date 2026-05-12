@@ -8,26 +8,35 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.paint.Color;
+
+import java.awt.*;
 
 /**
  * Heads-up display overlay showing player health, lives, floor number,
  * and ability cooldowns during gameplay.
  */
+
 public class HUDOverlay extends BorderPane {
 
     private final GameEngine engine;
     private ProgressBar healthBar;
     private Label livesLabel;
     private Label floorLabel;
-    private Label[] abilityLabels;
+    private ImageView[] slotIcons;
+    private Rectangle[] slotCdOverlays;
+    private Label[] slotCdLabels;
+    private Label[] slotNames;
 
     public HUDOverlay(GameEngine engine) {
         this.engine = engine;
-        setPickOnBounds(false); // Allow clicks to pass through to canvas
+        setPickOnBounds(false);
 
-        // Top bar — health + info
         VBox topBar = new VBox(4);
         topBar.setPadding(new Insets(10));
         topBar.setMaxWidth(300);
@@ -45,19 +54,46 @@ public class HUDOverlay extends BorderPane {
         topBar.getChildren().addAll(healthBar, livesLabel, floorLabel);
         setTop(topBar);
 
-        // Bottom bar — ability cooldowns
         HBox abilityBar = new HBox(10);
         abilityBar.setAlignment(Pos.CENTER);
         abilityBar.setPadding(new Insets(10));
 
-        abilityLabels = new Label[3];
+        slotIcons = new ImageView[3];
+        slotCdOverlays = new Rectangle[3];
+        slotCdLabels = new Label[3];
+        slotNames = new Label[3];
+
         for (int i = 0; i < 3; i++) {
-            abilityLabels[i] = new Label("[" + (i + 1) + "] ---");
-            abilityLabels[i].setStyle("-fx-text-fill: white; -fx-font-size: 13; " +
-                    "-fx-background-color: rgba(0,0,0,0.5); -fx-padding: 5 10;");
-            abilityBar.getChildren().add(abilityLabels[i]);
+            slotIcons[i] = new ImageView();
+            slotIcons[i].setFitWidth(56);
+            slotIcons[i].setFitHeight(56);
+            slotIcons[i].setPreserveRatio(true);
+
+            slotCdOverlays[i] = new Rectangle(56, 56);
+            slotCdOverlays[i].setFill(Color.rgb(0, 0, 0, 0.7));
+            slotCdOverlays[i].setVisible(false);
+
+            slotCdLabels[i] = new Label("");
+            slotCdLabels[i].setStyle(
+                    "-fx-text-fill: #f0e0b0; -fx-font-size: 20; -fx-font-weight: bold; " +
+                            "-fx-font-family: 'MedievalSharp';");
+
+            StackPane slot = new StackPane(slotIcons[i], slotCdOverlays[i], slotCdLabels[i]);
+            slot.setPrefSize(56, 56);
+
+            slotNames[i] = new Label("");
+            slotNames[i].setStyle(
+                    "-fx-text-fill: #d4af6c; -fx-font-size: 11; " +
+                            "-fx-font-family: 'MedievalSharp';");
+
+            VBox col = new VBox(2, slot, slotNames[i]);
+            col.setAlignment(Pos.CENTER);
+            abilityBar.getChildren().add(col);
+
         }
+
         setBottom(abilityBar);
+
     }
 
     /**
@@ -65,7 +101,9 @@ public class HUDOverlay extends BorderPane {
      */
     public void update() {
         Player player = engine.getPlayer();
-        if (player == null) return;
+        if (player == null) {
+            return;
+        }
 
         healthBar.setProgress(player.getHealthPercent());
         livesLabel.setText("Lives: " + player.getLives());
@@ -73,10 +111,23 @@ public class HUDOverlay extends BorderPane {
 
         Ability[] abilities = player.getAbilities();
         for (int i = 0; i < 3; i++) {
-            if (abilities[i] != null) {
-                String status = abilities[i].isReady() ? "READY" :
-                        String.format("%.1fs", abilities[i].getCurrentCooldown());
-                abilityLabels[i].setText("[" + (i + 1) + "] " + abilities[i].getName() + " " + status);
+            if (abilities[i] == null) {
+                slotIcons[i].setImage(null);
+                slotNames[i].setText("");
+                slotCdOverlays[i].setVisible(false);
+                slotCdLabels[i].setText("");
+                continue;
+            }
+
+            slotIcons[i].setImage(abilities[i].getIcon());
+            slotNames[i].setText(abilities[i].getName());
+
+            if (abilities[i].isReady()) {
+                slotCdOverlays[i].setVisible(false);
+                slotCdLabels[i].setText("");
+            } else {
+                slotCdOverlays[i].setVisible(true);
+                slotCdLabels[i].setText(String.format("%.1f", abilities[i].getCurrentCooldown()));
             }
         }
     }

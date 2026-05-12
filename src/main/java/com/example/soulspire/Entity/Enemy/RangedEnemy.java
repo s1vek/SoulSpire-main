@@ -22,7 +22,7 @@ public class RangedEnemy extends Enemy {
                 25,    // baseHealth (fragile)
                 15,    // baseAttack
                 1,     // defense
-                2.0,   // moveSpeed
+                60,   // moveSpeed
                 250,   // aggroRange
                 200,   // attackRange
                 1.5,   // attackCooldown
@@ -30,6 +30,11 @@ public class RangedEnemy extends Enemy {
         this.projectileSpeed = 300;
         this.preferredDistance = 150;
         this.lastFiredProjectile = null;
+    }
+
+    @Override
+    protected Color getBodyColor() {
+        return Color.GOLDENROD;
     }
 
     @Override
@@ -59,12 +64,4 @@ public class RangedEnemy extends Enemy {
 
      */
 
-    @Override
-    public void render(GraphicsContext gc, double cameraX, double cameraY) {
-        renderWithHealthBar(gc, cameraX, cameraY, BODY_COLOR);
-        double sx = x - cameraX + width / 2 - 3;
-        double sy = y - cameraY + height / 2 - 3;
-        gc.setFill(Color.BLACK);
-        gc.fillOval(sx, sy, 6, 6);
-    }
 }

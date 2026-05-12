@@ -1,6 +1,8 @@
 package com.example.soulspire.World;
 import com.example.soulspire.Core.GameConfig;
+import com.example.soulspire.Entity.Enemy.Enemy;
 import com.example.soulspire.Entity.Entity;
+import com.example.soulspire.Entity.Player.Player;
 import javafx.scene.canvas.GraphicsContext;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -50,9 +52,12 @@ public class Floor {
     /**
      * Updates all entities on this floor and removes inactive ones.
      */
-    public void update(double deltaTime) {
+    public void update(double deltaTime, Player player) {
         for (Entity entity : entities) {
             if (entity.isActive()) {
+                if (entity instanceof Enemy enemy) {
+                    enemy.updateAI(player, deltaTime);
+                }
                 entity.update(deltaTime);
             }
         }

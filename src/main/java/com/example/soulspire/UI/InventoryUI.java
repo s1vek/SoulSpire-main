@@ -75,7 +75,6 @@ public class InventoryUI extends VBox {
             equipmentSection.getChildren().add(row);
         }
 
-        // Clear and rebuild item grid
         itemGrid.getChildren().clear();
         int col = 0, row = 0;
         for (Item item : inventory.getItems()) {

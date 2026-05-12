@@ -70,14 +70,21 @@ public abstract class LivingEntity extends Entity {
      * Activates invulnerability frames after a successful hit.
      */
     public void takeDamage(int amount) {
-        if (invulnerable || isDead()) return;
-        int net = Math.max(0, amount - defense);
-        currentHealth = Math.max(0, currentHealth - net);
-        invulnerable = true;
-        invulnerabilityTimer = IFRAME_DURATION;
-        logger.info(getClass().getSimpleName() + " took " + net + " dmg ("
-                + currentHealth + "/" + maxHealth + ")");
-        if (isDead()) onDeath();
+        if (invulnerable || isDead()) {
+            return;
+        }
+
+        int actual = Math.max(1, amount - defense);
+        currentHealth -= actual;
+
+        if (currentHealth <= 0) {
+            currentHealth = 0;
+            active = false;
+            onDeath();
+        } else {
+            invulnerable = true;
+            invulnerabilityTimer = IFRAME_DURATION;
+        }
     }
 
     /**
@@ -99,7 +106,9 @@ public abstract class LivingEntity extends Entity {
      * @param deltaTime time elapsed since last frame in seconds
      */
     public void move(Direction dir, double deltaTime) {
-
+        this.facing = dir;
+        x += dir.getDx() * moveSpeed * deltaTime;
+        y += dir.getDy() * moveSpeed * deltaTime;
     }
 
     /**
@@ -120,7 +129,6 @@ public abstract class LivingEntity extends Entity {
             invulnerabilityTimer -= deltaTime;
             if (invulnerabilityTimer <= 0) {
                 invulnerable = false;
-                invulnerabilityTimer = 0;
             }
         }
     }
@@ -140,8 +148,7 @@ public abstract class LivingEntity extends Entity {
         return (double) currentHealth / maxHealth;
     }
 
-    protected void renderWithHealthBar(GraphicsContext gc, double cameraX, double cameraY,
-                                       Color fillColor) {
+    protected void renderWithHealthBar(GraphicsContext gc, double cameraX, double cameraY, Color fillColor) {
         Color effective = invulnerable ? Color.WHITE : fillColor;
         drawBox(gc, cameraX, cameraY, effective, Color.BLACK);
 

@@ -28,12 +28,17 @@ public class ChestGuardian extends Enemy {
                 60,    // baseHealth
                 15,    // baseAttack
                 5,     // defense
-                2.0,   // moveSpeed
+                50,   // moveSpeed
                 120,   // aggroRange (short — only near chest)
                 40,    // attackRange
                 1.0,   // attackCooldown
                 floorNumber);
         this.guardedChest = guardedChest;
+    }
+
+    @Override
+    protected Color getBodyColor() {
+        return Color.DARKVIOLET;
     }
 
     @Override
@@ -49,12 +54,5 @@ public class ChestGuardian extends Enemy {
         }
     }
 
-    @Override
-    public void render(GraphicsContext gc, double cameraX, double cameraY) {
-        renderWithHealthBar(gc, cameraX, cameraY, BODY_COLOR);
-        double cx = x - cameraX + width / 2;
-        double cy = y - cameraY + height / 2;
-        gc.setFill(Color.GOLD);
-        gc.fillPolygon(new double[]{cx, cx + 5, cx, cx - 5}, new double[]{cy - 8, cy, cy + 8, cy}, 4);
-    }
+
 }

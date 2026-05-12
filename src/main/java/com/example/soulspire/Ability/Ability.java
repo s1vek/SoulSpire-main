@@ -67,6 +67,9 @@ public abstract class Ability {
      * @param deltaTime time elapsed since last frame in seconds
      */
     public void update(double deltaTime) {
+        if (currentCooldown > 0) {
+            currentCooldown -= deltaTime;
+        }
     }
 
     /**
@@ -94,6 +97,25 @@ public abstract class Ability {
      */
     protected void resetCooldown() {
         currentCooldown = cooldown;
+    }
+
+    /**
+     * Utility used for loading icons into hub
+     * @param path
+     * @return
+     */
+    protected static javafx.scene.image.Image loadIcon(String path) {
+        try {
+            var stream = Ability.class.getResourceAsStream(path);
+            if (stream == null) {
+                System.err.println("Icon not found: " + path);
+                return null;
+            }
+            return new javafx.scene.image.Image(stream);
+        } catch (Exception e) {
+            System.err.println("Failed to load icon " + path + ": " + e.getMessage());
+            return null;
+        }
     }
 
     public String getName() { return name; }

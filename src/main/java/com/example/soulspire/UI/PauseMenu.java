@@ -40,7 +40,7 @@ public class PauseMenu extends VBox {
             new Thread(task).start();
         });
 
-        // Logging toggle — assignment requirement for runtime log control
+
         CheckBox logToggle = new CheckBox("Enable Logging");
         logToggle.setSelected(GameLogger.isEnabled());
         logToggle.setStyle("-fx-text-fill: white;");

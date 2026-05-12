@@ -41,8 +41,23 @@ public class CombatSystem {
      * @param entities all entities on the floor
      * @param owner    the entity causing the damage (excluded from hits)
      */
-    public void processAreaDamage(double centerX, double centerY, double radius,
-                                  int damage, List<Entity> entities, Entity owner) {
+    public void processAreaDamage(double centerX, double centerY, double radius, int damage, List<Entity> entities, Entity owner) {
+
+        double radiusSq = radius * radius;
+
+        for (Entity e : entities) {
+            if (e == owner) continue;
+            if (!e.isActive()) continue;
+            if (!(e instanceof LivingEntity living)) continue;
+
+            double dx = e.getCenterX() - centerX;
+            double dy = e.getCenterY() - centerY;
+            if (dx * dx + dy * dy <= radiusSq) {
+                living.takeDamage(damage);
+                logger.info(owner.getClass().getSimpleName() + " hit " +
+                        e.getClass().getSimpleName() + " for " + damage);
+            }
+        }
 
     }
 }

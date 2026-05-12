@@ -25,7 +25,7 @@ public class MeleeEnemy extends Enemy {
                 40,    // baseHealth
                 12,    // baseAttack
                 3,     // defense
-                2.5,   // moveSpeed
+                70,   // moveSpeed
                 200,   // aggroRange
                 40,    // attackRange
                 1.0,   // attackCooldown
@@ -33,12 +33,29 @@ public class MeleeEnemy extends Enemy {
     }
 
     @Override
-    public void updateAI(Player target, double deltaTime) {
-
+    protected Color getBodyColor() {
+        return Color.CRIMSON;
     }
 
     @Override
-    public void render(GraphicsContext gc, double cameraX, double cameraY) {
-        renderWithHealthBar(gc, cameraX, cameraY, BODY_COLOR);
+    public void updateAI(Player target, double deltaTime) {
+        checkAggro(target);
+
+        if (!aggroed) {
+            return;
+        }
+
+        double dist = distanceTo(target);
+
+        if (dist <= attackRange) {
+            if (currentAttackCooldown <= 0) {
+                target.takeDamage(attackDamage);
+                currentAttackCooldown = attackCooldown;
+            }
+        } else {
+            moveToward(target.getCenterX(), target.getCenterY(), deltaTime);
+        }
+
     }
+
 }

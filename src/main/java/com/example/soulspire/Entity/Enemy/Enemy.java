@@ -2,6 +2,8 @@ package com.example.soulspire.Entity.Enemy;
 
 import com.example.soulspire.Core.GameConfig;
 import com.example.soulspire.Entity.Direction;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 import com.example.soulspire.Entity.LivingEntity;
 import com.example.soulspire.Entity.Player.Player;
 import com.example.soulspire.Item.Item;
@@ -13,14 +15,8 @@ import java.util.List;
 /**
  * Abstract base class for all enemy types in the tower.
  * Each enemy has AI behavior, aggro detection, and a loot table.
- *
- * <ul>
- *   <li>{@link MeleeEnemy} — chases and attacks at close range</li>
- *   <li>{@link RangedEnemy} — keeps distance and fires projectiles</li>
- *   <li>{@link BossEnemy} — multi-phase fight on the final floor</li>
- *   <li>{@link ChestGuardian} — guards a chest, only aggros nearby</li>
- * </ul>
  */
+
 public abstract class Enemy extends LivingEntity {
 
     private static final GameLogger logger = GameLogger.getLogger(Enemy.class);
@@ -45,6 +41,8 @@ public abstract class Enemy extends LivingEntity {
 
     /** The floor number this enemy was spawned on (for stat scaling). */
     protected int floorNumber;
+
+    protected abstract Color getBodyColor();
 
     /**
      * Creates a new enemy with base stats that will be scaled by floor number.
@@ -97,6 +95,14 @@ public abstract class Enemy extends LivingEntity {
      * @param deltaTime time elapsed since last frame
      */
     protected void moveToward(double targetX, double targetY, double deltaTime) {
+        double dx = targetX - getCenterX();
+        double dy = targetY - getCenterY();
+
+        if (Math.abs(dx) > Math.abs(dy)) {
+            move(dx > 0 ? Direction.RIGHT : Direction.LEFT, deltaTime);
+        } else {
+            move(dy > 0 ? Direction.DOWN : Direction.UP, deltaTime);
+        }
 
     }
 
@@ -106,7 +112,9 @@ public abstract class Enemy extends LivingEntity {
      * @param target the player to check distance against
      */
     protected void checkAggro(Player target) {
-
+        if (!aggroed && distanceTo(target) <= aggroRange) {
+            aggroed = true;
+        }
     }
 
     /**
@@ -130,7 +138,33 @@ public abstract class Enemy extends LivingEntity {
     }
 
     @Override
+    public void render(GraphicsContext gc, double cameraX, double cameraY) {
+        double screenX = x - cameraX;
+        double screenY = y - cameraY;
+
+        gc.setFill(getBodyColor());
+        gc.fillRect(screenX, screenY, width, height);
+
+        if (aggroed) {
+            gc.setStroke(Color.YELLOW);
+            gc.setLineWidth(1.5);
+            gc.strokeRect(screenX - 1, screenY - 1, width + 2, height + 2);
+        }
+
+        double hpPct = (double) currentHealth / maxHealth;
+        gc.setFill(Color.BLACK);
+        gc.fillRect(screenX, screenY - 8, width, 4);
+        gc.setFill(Color.LIMEGREEN);
+        gc.fillRect(screenX, screenY - 8, width * hpPct, 4);
+    }
+
+
+    @Override
     public void update(double deltaTime) {
+        if (currentAttackCooldown > 0) {
+            currentAttackCooldown =- deltaTime;
+        }
+        updateInvulnerability(deltaTime);
 
     }
 

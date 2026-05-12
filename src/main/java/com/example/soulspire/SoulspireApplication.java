@@ -23,6 +23,7 @@ public class SoulspireApplication extends Application {
         StackPane root = new StackPane();
 
         GameScreen gameScreen = new GameScreen(engine);
+        engine.setHud(gameScreen.getHud());
         root.getChildren().add(gameScreen);
 
         ScreenManager screenManager =  new ScreenManager(root, engine);

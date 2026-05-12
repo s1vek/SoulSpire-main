@@ -1,6 +1,7 @@
 package com.example.soulspire.Entity.Player;
 
 import com.example.soulspire.Ability.Ability;
+import com.example.soulspire.Combat.CombatSystem;
 import com.example.soulspire.Core.GameConfig;
 import com.example.soulspire.Core.Saveable;
 import com.example.soulspire.Entity.Direction;
@@ -10,6 +11,7 @@ import com.example.soulspire.Entity.LivingEntity;
 import com.example.soulspire.Item.Inventory;
 import com.example.soulspire.Item.Item;
 import com.example.soulspire.Util.GameLogger;
+import com.example.soulspire.World.Floor;
 
 import java.util.List;
 import java.util.Map;
@@ -53,6 +55,10 @@ public abstract class Player extends LivingEntity implements Saveable {
     /** Remaining time before the next basic attack can be used. */
     protected double currentAttackCooldown;
 
+    protected Floor currentFloor;
+
+    protected CombatSystem combatSystem;
+
     /**
      * Creates a new player with stats derived from the given character type.
      *
@@ -74,7 +80,7 @@ public abstract class Player extends LivingEntity implements Saveable {
         this.inventory = new Inventory();
         this.abilities = new Ability[ABILITY_COUNT];
         this.lives = GameConfig.PLAYER_LIVES;
-        this.attackCooldown = 0.4;
+        this.attackCooldown = 0.15;
         this.currentAttackCooldown = 0;
         initAbilities();
     }
@@ -110,6 +116,17 @@ public abstract class Player extends LivingEntity implements Saveable {
      * @param targetY mouse Y position for ability targeting
      */
     public void useAbility(int index, double targetX, double targetY) {
+        if (index < 0 || index >= abilities.length) {
+            return;
+        }
+        Ability ability = abilities[index];
+        if (ability == null) {
+            return;
+        }
+        if (!ability.isReady()) {
+            return;
+        }
+        ability.execute(this, targetX, targetY);
 
     }
 
@@ -151,6 +168,17 @@ public abstract class Player extends LivingEntity implements Saveable {
      */
     @Override
     public void update(double deltaTime) {
+        updateInvulnerability(deltaTime);
+
+        if (currentAttackCooldown > 0) {
+            currentAttackCooldown -= deltaTime;
+        }
+
+        for (Ability ability : abilities) {
+            if (ability != null) {
+                ability.update(deltaTime);
+            }
+        }
 
     }
 
@@ -196,4 +224,8 @@ public abstract class Player extends LivingEntity implements Saveable {
     public Ability[] getAbilities() { return abilities; }
     public int getLives() { return lives; }
     public void setLives(int lives) { this.lives = lives; }
+    public CombatSystem getCombatSystem() {return combatSystem;}
+    public void setCombatSystem(CombatSystem combatSystem) {this.combatSystem = combatSystem;}
+    public Floor getCurrentFloor() {return currentFloor;}
+    public void setCurrentFloor(Floor currentFloor) {this.currentFloor = currentFloor;}
 }
