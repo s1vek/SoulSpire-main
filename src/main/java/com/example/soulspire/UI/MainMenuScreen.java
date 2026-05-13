@@ -38,6 +38,7 @@ public class MainMenuScreen extends VBox {
             engine.getStateManager().setState(GameState.CHARACTER_SELECT);
             screenManager.showScreen(GameState.CHARACTER_SELECT);
         });
+        newGameBtn.setFocusTraversable(false);
 
         Button loadBtn = new Button("Load Game");
         loadBtn.setStyle("-fx-font-family: 'MedievalSharp'; -fx-font-size: 16; -fx-text-fill: black;");
@@ -46,12 +47,15 @@ public class MainMenuScreen extends VBox {
         loadBtn.setOnAction(e -> {
             // TODO: load save data and restore game state
         });
+        loadBtn.setFocusTraversable(false);
+
 
         Button quitBtn = new Button("Quit");
         quitBtn.setStyle("-fx-font-family: 'MedievalSharp'; -fx-font-size: 16; -fx-text-fill: black;");
 
         quitBtn.setPrefWidth(200);
         quitBtn.setOnAction(e -> System.exit(0));
+        quitBtn.setFocusTraversable(false);
 
         getChildren().addAll(title, subtitle, newGameBtn, loadBtn, quitBtn);
     }

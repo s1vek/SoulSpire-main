@@ -172,28 +172,6 @@ public abstract class LivingEntity extends Entity {
         return (double) currentHealth / maxHealth;
     }
 
-    protected void renderWithHealthBar(GraphicsContext gc, double cameraX, double cameraY, Color fillColor) {
-        Color effective = invulnerable ? Color.WHITE : fillColor;
-        drawBox(gc, cameraX, cameraY, effective, Color.BLACK);
-
-        if (currentHealth < maxHealth) {
-            double sx = x - cameraX;
-            double sy = y - cameraY;
-            double barW = width;
-            double barH = 4;
-            double barY = sy - barH - 3;
-            gc.setFill(Color.web("#1a0000"));
-            gc.fillRect(sx, barY, barW, barH);
-            double pct = getHealthPercent();
-            Color hpColor = pct > 0.5 ? Color.web("#3aaf3a") : pct > 0.25 ? Color.ORANGE : Color.RED;
-            gc.setFill(hpColor);
-            gc.fillRect(sx, barY, barW * pct, barH);
-            gc.setStroke(Color.BLACK);
-            gc.setLineWidth(1);
-            gc.strokeRect(sx + 0.5, barY + 0.5, barW - 1, barH - 1);
-        }
-    }
-
 
     public int getMaxHealth() { return maxHealth; }
     public void setMaxHealth(int maxHealth) { this.maxHealth = maxHealth; }

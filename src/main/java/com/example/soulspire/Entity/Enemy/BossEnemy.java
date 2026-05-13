@@ -2,6 +2,8 @@ package com.example.soulspire.Entity.Enemy;
 
 import com.example.soulspire.Entity.Player.Player;
 import com.example.soulspire.Entity.Projectile;
+import com.example.soulspire.Item.Material;
+import com.example.soulspire.Item.MaterialType;
 import com.example.soulspire.Util.GameLogger;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -34,6 +36,8 @@ public class BossEnemy extends Enemy {
                 1.2,   // attackCooldown
                 floorNumber);
         this.rangedCooldown = 3;
+        lootTable.addDrop(new Material(MaterialType.IRON_ORE, 5), 1.0);
+        lootTable.addDrop(new Material(MaterialType.ETHEREAL_DUST, 3), 1.0);
     }
 
     @Override

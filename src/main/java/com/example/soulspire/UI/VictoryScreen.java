@@ -31,6 +31,7 @@ public class VictoryScreen extends VBox {
             engine.getStateManager().setState(GameState.MAIN_MENU);
             screenManager.showScreen(GameState.MAIN_MENU);
         });
+        menuBtn.setFocusTraversable(false);
 
         getChildren().addAll(title, subtitle, menuBtn);
     }

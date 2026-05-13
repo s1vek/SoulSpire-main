@@ -31,8 +31,6 @@ public class GameConfig {
 
     /**
      * Difficulty scaling per floor — enemy health and damage increase
-     * by this fraction for each floor above the first.
-     * Example: 0.15 means +15% per floor.
      */
     public static final double DIFFICULTY_SCALE = 0.15;
 

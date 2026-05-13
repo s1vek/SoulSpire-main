@@ -2,6 +2,8 @@ package com.example.soulspire.Entity.Enemy;
 
 import com.example.soulspire.Entity.Player.Player;
 import com.example.soulspire.Entity.Projectile;
+import com.example.soulspire.Item.Material;
+import com.example.soulspire.Item.MaterialType;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -30,7 +32,8 @@ public class RangedEnemy extends Enemy {
                 floorNumber);
         this.projectileSpeed = 300;
         this.preferredDistance = 150;
-        System.out.println("RangedEnemy spawned at " + x + "," + y);
+        lootTable.addDrop(new Material(MaterialType.IRON_ORE, 1), 0.4);
+        lootTable.addDrop(new Material(MaterialType.ETHEREAL_DUST, 1), 0.3);
     }
 
     @Override

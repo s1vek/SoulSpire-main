@@ -252,4 +252,5 @@ public abstract class Player extends LivingEntity implements Saveable {
     public void setCombatSystem(CombatSystem combatSystem) {this.combatSystem = combatSystem;}
     public Floor getCurrentFloor() {return currentFloor;}
     public void setCurrentFloor(Floor currentFloor) {this.currentFloor = currentFloor;}
+
 }

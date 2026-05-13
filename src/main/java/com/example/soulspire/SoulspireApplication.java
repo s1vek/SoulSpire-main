@@ -31,13 +31,20 @@ public class SoulspireApplication extends Application {
 
         GameScreen gameScreen = new GameScreen(engine);
         engine.setHud(gameScreen.getHud());
+        engine.setGameScreen(gameScreen);
         root.getChildren().add(gameScreen);
 
         ScreenManager screenManager =  new ScreenManager(root, engine);
         screenManager.initScreens();
         screenManager.showScreen(GameState.MAIN_MENU);
 
+        engine.setScreenManager(screenManager);
+        engine.setInventoryUI(gameScreen.getInventoryUI());
+
         Scene scene = new Scene(root, GameConfig.WINDOW_WIDTH, GameConfig.WINDOW_HEIGHT);
+        root.setFocusTraversable(true);
+        root.requestFocus();
+        scene.setOnMouseClicked(e -> root.requestFocus());
 
         inputHandler.registerHandlers(scene);
 

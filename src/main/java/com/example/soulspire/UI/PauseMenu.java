@@ -30,6 +30,7 @@ public class PauseMenu extends VBox {
             engine.getStateManager().togglePause();
             screenManager.hideAll();
         });
+        resumeBtn.setFocusTraversable(false);
 
         Button saveBtn = new Button("Save Game");
         saveBtn.setPrefWidth(180);
@@ -39,6 +40,7 @@ public class PauseMenu extends VBox {
             );
             new Thread(task).start();
         });
+        saveBtn.setFocusTraversable(false);
 
 
         CheckBox logToggle = new CheckBox("Enable Logging");
@@ -52,6 +54,7 @@ public class PauseMenu extends VBox {
             engine.getStateManager().setState(GameState.MAIN_MENU);
             screenManager.showScreen(GameState.MAIN_MENU);
         });
+        quitBtn.setFocusTraversable(false);
 
         getChildren().addAll(title, resumeBtn, saveBtn, logToggle, quitBtn);
     }

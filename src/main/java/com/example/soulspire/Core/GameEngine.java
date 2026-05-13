@@ -9,7 +9,10 @@ import com.example.soulspire.Entity.LivingEntity;
 import com.example.soulspire.Entity.Player.*;
 import com.example.soulspire.Entity.Projectile;
 import com.example.soulspire.Entity.Direction;
+import com.example.soulspire.UI.GameScreen;
 import com.example.soulspire.UI.HUDOverlay;
+import com.example.soulspire.UI.InventoryUI;
+import com.example.soulspire.UI.ScreenManager;
 import com.example.soulspire.Util.GameLogger;
 import com.example.soulspire.World.Floor;
 import com.example.soulspire.World.Tile;
@@ -37,6 +40,9 @@ public class GameEngine {
     private double cameraX;
     private double cameraY;
     private static final double VISION_RADIUS = 400;
+    private ScreenManager screenManager;
+    private InventoryUI inventoryUI;
+    private GameScreen gameScreen;
 
     public GameEngine(InputHandler inputHandler) {
         this.inputHandler = inputHandler;
@@ -71,10 +77,13 @@ public class GameEngine {
         player.setCurrentFloor(firstFloor);
         player.setCombatSystem(combatSystem);
         stateManager.setState(GameState.PLAYING);
-        logger.info("New game started");
-        System.out.println("floor size:" + firstFloor.getWidthInTiles() + "x:" + firstFloor.getHeightInTiles());
-        System.out.println("Player spawned on floor: " + tower.getCurrentFloorNumber());
 
+        if (gameScreen != null && inventoryUI == null) {
+            inventoryUI = new InventoryUI(player.getInventory());
+            gameScreen.attachInventoryUI(inventoryUI);
+        }
+
+        logger.info("New game started");
     }
 
 
@@ -115,6 +124,16 @@ public class GameEngine {
         }
         if (inputHandler.isKeyPressed(KeyCode.D)) {
             tryMove(Direction.RIGHT, deltaTime);
+        }
+
+        if (inputHandler.isKeyJustPressed(KeyCode.ESCAPE) && screenManager != null) {
+            stateManager.togglePause();
+            screenManager.showScreen(stateManager.getState());
+        }
+
+        if (inputHandler.isKeyJustPressed(KeyCode.I) && inventoryUI != null) {
+            inventoryUI.setVisible(!inventoryUI.isVisible());
+            if (inventoryUI.isVisible()) inventoryUI.refresh();
         }
 
         if (player == null) {
@@ -180,6 +199,7 @@ public class GameEngine {
      */
     public void update(double deltaTime) {
         if (stateManager.getState() != GameState.PLAYING) {
+            inputHandler.update();
             return;
         }
 
@@ -196,9 +216,8 @@ public class GameEngine {
             hud.update();
         }
 
-        System.out.println("Current floor: " + tower.getCurrentFloorNumber());
-
         checkFloorTransition();
+        inputHandler.update();
 
     }
 
@@ -304,4 +323,7 @@ public class GameEngine {
     public CombatSystem getCombatSystem() { return combatSystem; }
     public InputHandler getInputHandler() { return inputHandler; }
     public void setHud(HUDOverlay hud) { this.hud = hud; }
+    public void setScreenManager(ScreenManager sm) { this.screenManager = sm; }
+    public void setInventoryUI(InventoryUI ui) { this.inventoryUI = ui; }
+    public void setGameScreen(GameScreen gs) { this.gameScreen = gs; }
 }

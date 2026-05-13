@@ -84,6 +84,7 @@ public class CharacterSelectScreen extends VBox {
             engine.initNewGame(type, "Hero");
             screenManager.showScreen(GameState.PLAYING);
         });
+        selectBtn.setFocusTraversable(false);
 
         VBox bottomSection = new VBox();
         bottomSection.setAlignment(Pos.BOTTOM_CENTER);

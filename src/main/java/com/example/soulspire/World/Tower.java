@@ -2,7 +2,6 @@ package com.example.soulspire.World;
 
 import com.example.soulspire.Core.GameConfig;
 import com.example.soulspire.Core.Saveable;
-import com.example.soulspire.Util.FloorLoader;
 import com.example.soulspire.Util.FloorParser;
 import com.example.soulspire.Util.GameLogger;
 
@@ -24,7 +23,7 @@ public class Tower implements Saveable {
 
     public Tower() {
         this.floors = new ArrayList<>();
-        this.currentFloorIndex = 1;
+        this.currentFloorIndex = 5;
     }
 
     /**
@@ -37,14 +36,12 @@ public class Tower implements Saveable {
 
             Floor floor = FloorParser.loadFloor(i, safe);
             if (floor == null) {
-                floor = new Floor(i, GameConfig.FLOOR_WIDTH_TILES,
-                        GameConfig.FLOOR_HEIGHT_TILES, safe);
-                FloorLoader.populateFloor(floor);
+                logger.info("Missing JSON layout for floor " + i);
+                continue;
             }
             floors.add(floor);
         }
         logger.info("Generated " + floors.size() + " floors");
-
     }
 
     /**

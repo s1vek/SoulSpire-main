@@ -1,6 +1,8 @@
 package com.example.soulspire.Entity.Enemy;
 
 import com.example.soulspire.Entity.Player.Player;
+import com.example.soulspire.Item.Material;
+import com.example.soulspire.Item.MaterialType;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -30,6 +32,8 @@ public class MeleeEnemy extends Enemy {
                 40,    // attackRange
                 1.0,   // attackCooldown
                 floorNumber);
+        lootTable.addDrop(new Material(MaterialType.IRON_ORE, 1), 0.6);
+        lootTable.addDrop(new Material(MaterialType.ETHEREAL_DUST, 1), 0.15);
     }
 
     @Override

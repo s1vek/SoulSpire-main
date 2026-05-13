@@ -6,6 +6,7 @@ import com.example.soulspire.Entity.Entity;
 import com.example.soulspire.Entity.LivingEntity;
 import com.example.soulspire.Entity.Player.Player;
 import com.example.soulspire.Entity.Projectile;
+import com.example.soulspire.Item.Item;
 import javafx.scene.canvas.GraphicsContext;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -69,6 +70,16 @@ public class Floor {
                 checkProjectileHit(p, player);
             }
         }
+
+        for (Entity e : entities) {
+            if (!e.isActive() && e instanceof Enemy enemy && !enemy.isLootCollected()) {
+                enemy.setLootCollected(true);
+                for (Item item : enemy.dropLoot()) {
+                    player.getInventory().addItem(item);
+                }
+            }
+        }
+
         removeInactiveEntities();
     }
 

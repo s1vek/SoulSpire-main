@@ -58,7 +58,24 @@ public class Warrior extends Player {
 
     @Override
     public void render(GraphicsContext gc, double cameraX, double cameraY) {
-        renderWithHealthBar(gc, cameraX, cameraY, BODY_COLOR);
+        double screenX = getX() - cameraX;
+        double screenY = getY() - cameraY;
+
+        Color body = Color.RED;
+
+        if (invulnerable) {
+            boolean flashOn = ((int)(invulnerabilityTimer * 10)) % 2 == 0;
+            gc.setFill(flashOn ? Color.WHITE : body);
+        } else {
+            gc.setFill(body);
+        }
+        gc.fillRect(screenX, screenY, getWidth(), getHeight());
+
+        if (frozen) {
+            gc.setStroke(Color.LIGHTCYAN);
+            gc.setLineWidth(3);
+            gc.strokeRect(screenX - 2, screenY - 2, getWidth() + 4, getHeight() + 4);
+        }
     }
 
     @Override

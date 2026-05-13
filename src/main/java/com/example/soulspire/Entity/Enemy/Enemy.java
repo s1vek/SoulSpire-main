@@ -45,6 +45,8 @@ public abstract class Enemy extends LivingEntity {
     /** The floor number this enemy was spawned on (for stat scaling). */
     protected int floorNumber;
 
+    private boolean lootCollected = false;
+
     protected abstract Color getBodyColor();
 
     /**
@@ -256,4 +258,6 @@ public abstract class Enemy extends LivingEntity {
     public void setLootTable(LootTable lootTable) { this.lootTable = lootTable; }
     public boolean isAggroed() { return aggroed; }
     public int getFloorNumber() { return floorNumber; }
+    public boolean isLootCollected() { return lootCollected; }
+    public void setLootCollected(boolean v) { this.lootCollected = v; }
 }

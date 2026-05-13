@@ -2,6 +2,8 @@ package com.example.soulspire.Entity.Enemy;
 
 import com.example.soulspire.Entity.Chest;
 import com.example.soulspire.Entity.Player.Player;
+import com.example.soulspire.Item.Material;
+import com.example.soulspire.Item.MaterialType;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -34,6 +36,8 @@ public class ChestGuardian extends Enemy {
                 1.0,   // attackCooldown
                 floorNumber);
         this.guardedChest = guardedChest;
+        lootTable.addDrop(new Material(MaterialType.IRON_ORE, 2), 1.0);
+        lootTable.addDrop(new Material(MaterialType.ETHEREAL_DUST, 1), 1.0);
     }
 
     @Override
