@@ -36,6 +36,7 @@ public class GameEngine {
     private HUDOverlay hud;
     private double cameraX;
     private double cameraY;
+    private static final double VISION_RADIUS = 400;
 
     public GameEngine(InputHandler inputHandler) {
         this.inputHandler = inputHandler;
@@ -76,40 +77,16 @@ public class GameEngine {
 
     }
 
-    /**
-     * Main update method called every frame by the GameLoop.
-     */
-    public void update(double deltaTime) {
-        if (stateManager.getState() != GameState.PLAYING) {
-            return;
-        }
-
-        handlePlayerInput(deltaTime);
-
-        Floor currFloor = tower.getCurrentFloor();
-        currFloor.update(deltaTime, player);
-
-        if (player != null) {
-            player.update(deltaTime);
-        }
-
-        updateCamera();
-
-        if (hud != null) {
-            hud.update();
-        }
-
-        System.out.println("Current floor: " + tower.getCurrentFloorNumber());
-
-        checkFloorTransition();
-
-    }
 
     private void checkFloorTransition() {
-        if (player == null) return;
+        if (player == null) {
+            return;
+        }
         Floor current = tower.getCurrentFloor();
         Tile tile = current.getTileAtPixel(player.getCenterX(), player.getCenterY());
-        if (tile == null || tile.getType() != TileType.EXIT) return;
+        if (tile == null || tile.getType() != TileType.EXIT) {
+            return;
+        }
 
         if (tower.advanceFloor()) {
             Floor next = tower.getCurrentFloor();
@@ -199,15 +176,39 @@ public class GameEngine {
     }
 
     /**
-     * Centers the camera on the player.
+     * Main update method called every frame by the GameLoop.
      */
-    private void updateCamera() {
-        if (player == null) {
+    public void update(double deltaTime) {
+        if (stateManager.getState() != GameState.PLAYING) {
             return;
         }
 
-        double viewW = GameConfig.WINDOW_WIDTH;
-        double viewH = GameConfig.WINDOW_HEIGHT;
+        handlePlayerInput(deltaTime);
+
+        Floor currFloor = tower.getCurrentFloor();
+        currFloor.update(deltaTime, player);
+
+        if (player != null) {
+            player.update(deltaTime);
+        }
+
+        if (hud != null) {
+            hud.update();
+        }
+
+        System.out.println("Current floor: " + tower.getCurrentFloorNumber());
+
+        checkFloorTransition();
+
+    }
+
+    /**
+     * Centers the camera on the player.
+     */
+    private void updateCamera(double viewW, double viewH) {
+        if (player == null) {
+            return;
+        }
 
         cameraX = player.getCenterX() - viewW / 2.0;
         cameraY = player.getCenterY() - viewH / 2.0;
@@ -245,20 +246,37 @@ public class GameEngine {
      * Renders the current game state.
      */
     public void render(GraphicsContext gc) {
+        double viewW = gc.getCanvas().getWidth();
+        double viewH = gc.getCanvas().getHeight();
 
         gc.setFill(Color.BLACK);
-        gc.fillRect(0,0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+        gc.fillRect(0, 0, viewW, viewH);
 
         if (player == null) {
             return;
         }
 
+        updateCamera(viewW, viewH);
+
         Floor currentFloor = tower.getCurrentFloor();
-        currentFloor.render(gc, cameraX, cameraY);
+        currentFloor.render(gc, cameraX, cameraY, viewW, viewH);
         player.render(gc, cameraX, cameraY);
-
         drawAimIndicator(gc);
+        
+        drawFog(gc, viewW, viewH);
+    }
 
+    private void drawFog(GraphicsContext gc, double viewW, double viewH) {
+        double px = player.getCenterX() - cameraX;
+        double py = player.getCenterY() - cameraY;
+
+        javafx.scene.paint.RadialGradient grad = new javafx.scene.paint.RadialGradient(0, 0, px, py, VISION_RADIUS, false, javafx.scene.paint.CycleMethod.NO_CYCLE,
+                new javafx.scene.paint.Stop(0.99, Color.TRANSPARENT),
+                new javafx.scene.paint.Stop(1.0,  Color.BLACK)
+        );
+
+        gc.setFill(grad);
+        gc.fillRect(0, 0, viewW, viewH);
     }
 
     private void drawAimIndicator(GraphicsContext gc) {

@@ -118,11 +118,13 @@ public class Floor {
     /**
      * Renders the tile grid and all entities.
      */
-    public void render(GraphicsContext gc, double cameraX, double cameraY) {
-        int startX = Math.max(0, (int)(cameraX / GameConfig.TILE_SIZE));
-        int startY = Math.max(0, (int)(cameraY / GameConfig.TILE_SIZE));
-        int endX = Math.min(widthInTiles, startX + GameConfig.WINDOW_WIDTH / GameConfig.TILE_SIZE + 2);
-        int endY = Math.min(heightInTiles, startY + GameConfig.WINDOW_HEIGHT / GameConfig.TILE_SIZE + 2);
+    public void render(GraphicsContext gc, double cameraX, double cameraY, double viewW, double viewH) {
+        int tileSize = GameConfig.TILE_SIZE;
+
+        int startX = Math.max(0, (int)(cameraX / tileSize));
+        int startY = Math.max(0, (int)(cameraY / tileSize));
+        int endX = Math.min(widthInTiles, startX + (int)(viewW / tileSize) + 2);
+        int endY = Math.min(heightInTiles, startY + (int)(viewH / tileSize) + 2);
 
         for (int y = startY; y < endY; y++) {
             for (int x = startX; x < endX; x++) {
@@ -130,10 +132,8 @@ public class Floor {
             }
         }
 
-        double worldW = widthInTiles * GameConfig.TILE_SIZE;
-        double worldH = heightInTiles * GameConfig.TILE_SIZE;
-        double viewW = GameConfig.WINDOW_WIDTH;
-        double viewH = GameConfig.WINDOW_HEIGHT;
+        double worldW = widthInTiles * tileSize;
+        double worldH = heightInTiles * tileSize;
 
         for (Entity entity : entities) {
             if (!entity.isActive()) continue;

@@ -186,7 +186,7 @@ public abstract class Enemy extends LivingEntity {
         double screenY = y - cameraY;
 
         gc.setFill(getBodyColor());
-        gc.fillRect(screenX, screenY, width, height);
+        gc.fillOval(screenX, screenY, width, height);
 
         if (aggroed) {
             gc.setStroke(Color.YELLOW);

@@ -20,6 +20,7 @@ public class GameScreen extends StackPane {
         canvas = new Canvas();
         canvas.widthProperty().bind(widthProperty());
         canvas.heightProperty().bind(heightProperty());
+
         gc = canvas.getGraphicsContext2D();
         hud = new HUDOverlay(engine);
 

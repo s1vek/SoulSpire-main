@@ -50,4 +50,10 @@ public class GameConfig {
 
     /** Default interaction range for Interactable entities (in pixels). */
     public static final double DEFAULT_INTERACTION_RANGE = 80.0;
+
+    /** Game viewport width — the actual game area, centered inside the canvas. */
+    public static final int VIEWPORT_WIDTH = 1600;
+
+    /** Game viewport height — the actual game area, centered inside the canvas. */
+    public static final int VIEWPORT_HEIGHT = 900;
 }

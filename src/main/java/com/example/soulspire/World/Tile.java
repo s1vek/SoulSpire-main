@@ -18,6 +18,8 @@ public class Tile {
     public static void loadTextures() {
         load(TileType.WALL, "/com/example/soulspire/images/wall.png");
         load(TileType.FLOOR, "/com/example/soulspire/images/floor.png");
+        load(TileType.DOOR, "/com/example/soulspire/images/door.png");
+
     }
 
     private static void load(TileType type, String path) {

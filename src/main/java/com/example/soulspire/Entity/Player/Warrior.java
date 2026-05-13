@@ -57,7 +57,6 @@ public class Warrior extends Player {
     @Override
     public void render(GraphicsContext gc, double cameraX, double cameraY) {
         renderWithHealthBar(gc, cameraX, cameraY, BODY_COLOR);
-
     }
 
     @Override

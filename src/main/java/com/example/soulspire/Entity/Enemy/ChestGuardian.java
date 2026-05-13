@@ -43,7 +43,25 @@ public class ChestGuardian extends Enemy {
 
     @Override
     public void updateAI(Player target, double deltaTime) {
+        if (isStunned()) {
+            return;
+        }
 
+        checkAggro(target);
+        if (!aggroed) {
+            return;
+        }
+
+        double dist = distanceTo(target);
+
+        if (dist <= attackRange) {
+            if (currentAttackCooldown <= 0) {
+                target.takeDamage(attackDamage);
+                currentAttackCooldown = attackCooldown;
+            }
+        } else {
+            moveToward(target.getCenterX(), target.getCenterY(), deltaTime);
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.soulspire.Entity.Enemy;
 
 import com.example.soulspire.Entity.Player.Player;
+import com.example.soulspire.Entity.Projectile;
 import com.example.soulspire.Util.GameLogger;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -14,9 +15,10 @@ import javafx.scene.paint.Color;
 public class BossEnemy extends Enemy {
 
     private static final GameLogger logger = GameLogger.getLogger(BossEnemy.class);
-    private static final Color BODY_COLOR_PHASE_1 = Color.BLACK;
-    private static final Color BODY_COLOR_PHASE_2 = Color.DARKRED;
-    private static final Color BORDER_COLOR = Color.CRIMSON;
+    private static final double RANGED_INTERVAL = 3.0;
+    private static final double PROJECTILE_SPEED = 280;
+    private static final double PROJECTILE_RANGE = 450;
+    private double rangedCooldown;
 
     private int currentPhase;
     private boolean phaseTransitioned;
@@ -31,8 +33,7 @@ public class BossEnemy extends Enemy {
                 50,    // attackRange
                 1.2,   // attackCooldown
                 floorNumber);
-        this.currentPhase = 1;
-        this.phaseTransitioned = false;
+        this.rangedCooldown = 3;
     }
 
     @Override
@@ -42,7 +43,47 @@ public class BossEnemy extends Enemy {
 
     @Override
     public void updateAI(Player target, double deltaTime) {
+        if (isStunned()) {
+            return;
+        }
 
+        rangedCooldown -= deltaTime;
+
+        checkAggro(target);
+        if (!aggroed) {
+            return;
+        }
+
+        double dist = distanceTo(target);
+
+        if (rangedCooldown <= 0 && hasLineOfSight(target)) {
+            shootAt(target.getCenterX(), target.getCenterY());
+            rangedCooldown = RANGED_INTERVAL;
+        }
+
+        if (dist <= attackRange) {
+            if (currentAttackCooldown <= 0) {
+                target.takeDamage(attackDamage);
+                currentAttackCooldown = attackCooldown;
+            }
+        } else {
+            moveToward(target.getCenterX(), target.getCenterY(), deltaTime);
+        }
+
+    }
+
+    private void shootAt(double targetX, double targetY) {
+        if (currentFloor == null) {
+            return;
+        }
+        Projectile p = new Projectile(
+                getCenterX() - 5, getCenterY() - 5,
+                targetX, targetY,
+                PROJECTILE_SPEED, attackDamage,
+                PROJECTILE_RANGE, this
+        );
+        p.setColor(Color.CRIMSON);
+        currentFloor.addEntity(p);
     }
 
     /**
