@@ -56,7 +56,7 @@ public class Floor {
      * Updates all entities on this floor and removes inactive ones.
      */
     public void update(double deltaTime, Player player) {
-        for (Entity entity : entities) {
+        for (Entity entity : new ArrayList<>(entities)) {
             if (entity.isActive()) {
                 if (entity instanceof Enemy enemy) {
                     enemy.updateAI(player, deltaTime);
@@ -201,7 +201,13 @@ public class Floor {
         }
     }
 
-    public void addEntity(Entity entity) { entities.add(entity); }
+    public void addEntity(Entity entity) {
+        if (entity instanceof LivingEntity le) {
+            le.setCurrentFloor(this);
+        }
+        entities.add(entity);
+    }
+
     public void removeEntity(Entity entity) { entities.remove(entity); }
     public List<Entity> getEntities() { return entities; }
     public int getFloorNumber() { return floorNumber; }

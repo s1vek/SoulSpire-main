@@ -56,9 +56,8 @@ public class FloorLoader {
     private static void populateCombatFloor(Floor floor) {
         int ts = GameConfig.TILE_SIZE;
         int fn = floor.getFloorNumber();
-        int enemyCount = 3 + fn; // More enemies on higher floors
+        int enemyCount = 3 + fn;
 
-        // Spawn melee enemies
         for (int i = 0; i < enemyCount; i++) {
             double ex = (3 + random.nextInt(floor.getWidthInTiles() - 6)) * ts;
             double ey = (3 + random.nextInt(floor.getHeightInTiles() - 6)) * ts;
@@ -69,18 +68,14 @@ public class FloorLoader {
             }
         }
 
-        // Place a chest with guardian
         double chestX = (floor.getWidthInTiles() - 4) * ts;
         double chestY = (floor.getHeightInTiles() - 4) * ts;
         SoulEcho reward = generateRandomSoulEcho();
         Chest chest = new Chest(chestX, chestY, reward);
         floor.addEntity(chest);
         floor.addEntity(new ChestGuardian(chestX - ts, chestY, fn, chest));
-
-        // Set exit tile
         floor.setTileAt(floor.getWidthInTiles() - 2, floor.getHeightInTiles() / 2, TileType.EXIT);
 
-        // Boss on final floor
         if (fn == GameConfig.TOTAL_FLOORS - 1) {
             floor.addEntity(new BossEnemy(10 * ts, 7 * ts, fn));
         }
@@ -92,7 +87,7 @@ public class FloorLoader {
     private static SoulEcho generateRandomSoulEcho() {
         AbilityType[] types = AbilityType.values();
         AbilityType target = types[random.nextInt(types.length)];
-        double value = 0.1 + random.nextDouble() * 0.3; // 10-40% boost
+        double value = 0.1 + random.nextDouble() * 0.3;
         String name = switch (target) {
             case OFFENSIVE -> "Fury Shard";
             case DEFENSIVE -> "Iron Ward";

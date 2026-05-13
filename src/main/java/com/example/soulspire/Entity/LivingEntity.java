@@ -1,6 +1,8 @@
 package com.example.soulspire.Entity;
 
 import com.example.soulspire.Util.GameLogger;
+import com.example.soulspire.World.Floor;
+import com.example.soulspire.World.Tile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -38,6 +40,8 @@ public abstract class LivingEntity extends Entity {
 
     /** Remaining invulnerability time in seconds. Counts down to zero. */
     protected double invulnerabilityTimer;
+
+    protected Floor currentFloor;
 
     /**
      * Creates a new living entity with the given stats.
@@ -106,9 +110,29 @@ public abstract class LivingEntity extends Entity {
      * @param deltaTime time elapsed since last frame in seconds
      */
     public void move(Direction dir, double deltaTime) {
+        double dx = dir.getDx() * moveSpeed * deltaTime;
+        double dy = dir.getDy() * moveSpeed * deltaTime;
+
+        if (currentFloor != null) {
+            if (canMoveTo(x + dx, y)) x += dx;
+            if (canMoveTo(x, y + dy)) y += dy;
+        } else {
+            x += dx;
+            y += dy;
+        }
         this.facing = dir;
-        x += dir.getDx() * moveSpeed * deltaTime;
-        y += dir.getDy() * moveSpeed * deltaTime;
+    }
+
+    private boolean canMoveTo(double newX, double newY) {
+        double m = 1;
+        Tile tl = currentFloor.getTileAtPixel(newX + m, newY + m);
+        Tile tr = currentFloor.getTileAtPixel(newX + width - m, newY + m);
+        Tile bl = currentFloor.getTileAtPixel(newX + m, newY + height - m);
+        Tile br = currentFloor.getTileAtPixel(newX + width - m, newY + height - m);
+        return tl != null && tl.isWalkable()
+                && tr != null && tr.isWalkable()
+                && bl != null && bl.isWalkable()
+                && br != null && br.isWalkable();
     }
 
     /**
@@ -187,5 +211,7 @@ public abstract class LivingEntity extends Entity {
     public void setFacing(Direction facing) { this.facing = facing; }
     public boolean isInvulnerable() { return invulnerable; }
     public void setInvulnerable(boolean invulnerable) { this.invulnerable = invulnerable; }
+    public Floor getCurrentFloor() { return currentFloor; }
+    public void setCurrentFloor(Floor floor) { this.currentFloor = floor; }
 
 }

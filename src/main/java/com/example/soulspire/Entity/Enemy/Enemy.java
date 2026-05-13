@@ -108,6 +108,16 @@ public abstract class Enemy extends LivingEntity {
 
     }
 
+    protected void moveAway(double targetX, double targetY, double deltaTime) {
+        double dx = getCenterX() - targetX;
+        double dy = getCenterY() - targetY;
+        if (Math.abs(dx) > Math.abs(dy)) {
+            move(dx > 0 ? Direction.RIGHT : Direction.LEFT, deltaTime);
+        } else {
+            move(dy > 0 ? Direction.DOWN : Direction.UP, deltaTime);
+        }
+    }
+
     /**
      * Checks whether the player is within aggro range and updates the aggroed flag.
      *

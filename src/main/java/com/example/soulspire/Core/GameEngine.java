@@ -71,6 +71,7 @@ public class GameEngine {
         stateManager.setState(GameState.PLAYING);
         logger.info("New game started");
         System.out.println("floor size:" + firstFloor.getWidthInTiles() + "x:" + firstFloor.getHeightInTiles());
+        System.out.println("Player spawned on floor: " + tower.getCurrentFloorNumber());
 
     }
 
@@ -96,6 +97,8 @@ public class GameEngine {
         if (hud != null) {
             hud.update();
         }
+
+        System.out.println("Current floor: " + tower.getCurrentFloorNumber());
 
     }
 

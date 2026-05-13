@@ -12,6 +12,9 @@ import com.example.soulspire.Entity.Npc.Merchant;
 import com.example.soulspire.Item.SoulEcho;
 import com.example.soulspire.World.Floor;
 import com.example.soulspire.World.TileType;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,17 +34,34 @@ public class FloorParser {
     }
 
     public static Floor loadFloor(int floorNumber, boolean isSafeZone) {
-        String resourcePath = "/floors/floor_" + floorNumber + ".txt";
+        String resourcePath = "/floors/floor_" + floorNumber + ".json";
         try (InputStream is = FloorParser.class.getResourceAsStream(resourcePath)) {
             if (is == null) {
-                logger.info("No layout file for floor " + floorNumber
-                        + " (looked for " + resourcePath + ") — using fallback");
+                logger.info("No JSON layout for floor " + floorNumber
+                        + " (looked for " + resourcePath + ")");
                 return null;
             }
-            List<String> lines = readLines(is);
-            return parse(lines, floorNumber, isSafeZone);
+
+            String content = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+            JSONObject json = new JSONObject(content);
+
+            boolean safeFromJson = json.optBoolean("isSafeZone", isSafeZone);
+            String name = json.optString("name", "Floor " + floorNumber);
+            JSONArray layoutArray = json.getJSONArray("layout");
+
+            List<String> lines = new ArrayList<>();
+            for (int i = 0; i < layoutArray.length(); i++) {
+                lines.add(layoutArray.getString(i));
+            }
+
+            Floor floor = parse(lines, floorNumber, safeFromJson);
+            logger.info("Loaded floor " + floorNumber + " (" + name + ") from JSON");
+            return floor;
         } catch (IOException e) {
             logger.error("Failed to read floor " + floorNumber, e);
+            return null;
+        } catch (JSONException e) {
+            logger.error("Invalid JSON for floor " + floorNumber, e);
             return null;
         }
     }

@@ -55,8 +55,6 @@ public abstract class Player extends LivingEntity implements Saveable {
     /** Remaining time before the next basic attack can be used. */
     protected double currentAttackCooldown;
 
-    protected Floor currentFloor;
-
     protected CombatSystem combatSystem;
 
     public boolean enranged = false;
