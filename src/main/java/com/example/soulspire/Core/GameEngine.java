@@ -13,6 +13,7 @@ import com.example.soulspire.UI.HUDOverlay;
 import com.example.soulspire.Util.GameLogger;
 import com.example.soulspire.World.Floor;
 import com.example.soulspire.World.Tile;
+import com.example.soulspire.World.TileType;
 import com.example.soulspire.World.Tower;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
@@ -100,6 +101,26 @@ public class GameEngine {
 
         System.out.println("Current floor: " + tower.getCurrentFloorNumber());
 
+        checkFloorTransition();
+
+    }
+
+    private void checkFloorTransition() {
+        if (player == null) return;
+        Floor current = tower.getCurrentFloor();
+        Tile tile = current.getTileAtPixel(player.getCenterX(), player.getCenterY());
+        if (tile == null || tile.getType() != TileType.EXIT) return;
+
+        if (tower.advanceFloor()) {
+            Floor next = tower.getCurrentFloor();
+            player.setCurrentFloor(next);
+            player.setX(next.getSpawnX());
+            player.setY(next.getSpawnY());
+            logger.info("Advanced to floor " + tower.getCurrentFloorNumber());
+        } else {
+            logger.info("VICTORY — final floor cleared");
+            stateManager.setState(GameState.VICTORY);
+        }
     }
 
     /**

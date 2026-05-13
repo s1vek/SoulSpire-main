@@ -2,6 +2,7 @@ package com.example.soulspire.Entity.Enemy;
 
 import com.example.soulspire.Core.GameConfig;
 import com.example.soulspire.Entity.Direction;
+import com.example.soulspire.World.Tile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import com.example.soulspire.Entity.LivingEntity;
@@ -124,9 +125,39 @@ public abstract class Enemy extends LivingEntity {
      * @param target the player to check distance against
      */
     protected void checkAggro(Player target) {
-        if (!aggroed && distanceTo(target) <= aggroRange) {
-            aggroed = true;
+        if (aggroed) {
+            return;
         }
+        if (distanceTo(target) > aggroRange){
+            return;
+        }
+        if (!hasLineOfSight(target)){
+            return;
+        }
+        aggroed = true;
+    }
+
+    protected boolean hasLineOfSight(Player target) {
+        if (currentFloor == null) return true;
+
+        double startX = getCenterX();
+        double startY = getCenterY();
+        double dx = target.getCenterX() - startX;
+        double dy = target.getCenterY() - startY;
+        double dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 0.001) return true;
+
+        int steps = (int) (dist / 8);
+        for (int i = 1; i < steps; i++) {
+            double t = i / (double) steps;
+            double sampleX = startX + dx * t;
+            double sampleY = startY + dy * t;
+            Tile tile = currentFloor.getTileAtPixel(sampleX, sampleY);
+            if (tile == null || !tile.isWalkable()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

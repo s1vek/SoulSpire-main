@@ -12,6 +12,8 @@ import com.example.soulspire.Item.Inventory;
 import com.example.soulspire.Item.Item;
 import com.example.soulspire.Util.GameLogger;
 import com.example.soulspire.World.Floor;
+import com.example.soulspire.World.Tile;
+import com.example.soulspire.World.TileType;
 
 import java.util.List;
 import java.util.Map;
@@ -60,6 +62,12 @@ public abstract class Player extends LivingEntity implements Saveable {
     public boolean enranged = false;
 
     public boolean frozen = false;
+
+    private double trapDamageTimer = 0;
+
+    private static final double TRAP_DAMAGE_INTERVAL = 1.0;
+
+    private static final int TRAP_DAMAGE = 10;
 
     /**
      * Creates a new player with stats derived from the given character type.
@@ -171,6 +179,7 @@ public abstract class Player extends LivingEntity implements Saveable {
     @Override
     public void update(double deltaTime) {
         updateInvulnerability(deltaTime);
+        checkTrapDamage(deltaTime);
 
         if (currentAttackCooldown > 0) {
             currentAttackCooldown -= deltaTime;
@@ -182,6 +191,21 @@ public abstract class Player extends LivingEntity implements Saveable {
             }
         }
 
+    }
+
+    private void checkTrapDamage(double deltaTime) {
+        if (currentFloor == null) return;
+        Tile t = currentFloor.getTileAtPixel(getCenterX(), getCenterY());
+        if (t == null || t.getType() != TileType.TRAP) {
+            trapDamageTimer = 0;
+            return;
+        }
+
+        trapDamageTimer -= deltaTime;
+        if (trapDamageTimer <= 0) {
+            takeDamage(TRAP_DAMAGE);
+            trapDamageTimer = TRAP_DAMAGE_INTERVAL;
+        }
     }
 
     /**

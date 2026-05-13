@@ -24,7 +24,7 @@ public class Tower implements Saveable {
 
     public Tower() {
         this.floors = new ArrayList<>();
-        this.currentFloorIndex = 0;
+        this.currentFloorIndex = 1;
     }
 
     /**
