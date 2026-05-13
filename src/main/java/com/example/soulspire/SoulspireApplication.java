@@ -4,6 +4,7 @@ import com.example.soulspire.Core.*;
 import com.example.soulspire.UI.CharacterSelectScreen;
 import com.example.soulspire.UI.GameScreen;
 import com.example.soulspire.UI.ScreenManager;
+import com.example.soulspire.Util.SoundManager;
 import com.example.soulspire.World.Tile;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,9 @@ public class SoulspireApplication extends Application {
         GameEngine engine = new GameEngine(inputHandler);
 
         StackPane root = new StackPane();
+
+        SoundManager soundManager = new SoundManager();
+        soundManager.playMusic("/com/example/soulspire/sounds/SoulSpire.mp3");
 
         GameScreen gameScreen = new GameScreen(engine);
         engine.setHud(gameScreen.getHud());

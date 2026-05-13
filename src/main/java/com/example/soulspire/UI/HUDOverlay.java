@@ -3,6 +3,7 @@ package com.example.soulspire.UI;
 import com.example.soulspire.Ability.Ability;
 import com.example.soulspire.Core.GameEngine;
 import com.example.soulspire.Entity.Player.Player;
+import com.example.soulspire.Util.SoundManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -14,8 +15,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
-
-import java.awt.*;
+import javafx.scene.control.Button;
 
 /**
  * Heads-up display overlay showing player health, lives, floor number,
@@ -57,6 +57,19 @@ public class HUDOverlay extends BorderPane {
         HBox abilityBar = new HBox(10);
         abilityBar.setAlignment(Pos.CENTER);
         abilityBar.setPadding(new Insets(10));
+
+        Button muteBtn = new Button("🔊");
+        muteBtn.setFocusTraversable(false);
+        muteBtn.setStyle("-fx-background-color: rgba(0,0,0,0.6); " + "-fx-text-fill: white; " + "-fx-font-size: 20; " + "-fx-background-radius: 20; " + "-fx-min-width: 40; -fx-min-height: 40;");
+        muteBtn.setOnAction(e -> {
+            SoundManager.toggleMute();
+            muteBtn.setText(SoundManager.isMuted() ? "🔇" : "🔊");
+        });
+
+        VBox topRight = new VBox(muteBtn);
+        topRight.setPadding(new Insets(10));
+        topRight.setAlignment(Pos.TOP_RIGHT);
+        setRight(topRight);
 
         slotIcons = new ImageView[3];
         slotCdOverlays = new Rectangle[3];

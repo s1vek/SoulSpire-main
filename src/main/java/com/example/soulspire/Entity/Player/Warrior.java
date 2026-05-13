@@ -4,6 +4,7 @@ package com.example.soulspire.Entity.Player;
 import com.example.soulspire.Ability.BladewhirlAbility;
 import com.example.soulspire.Ability.ChargeAbility;
 import com.example.soulspire.Ability.EnrageAbility;
+import com.example.soulspire.Util.SoundManager;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -17,6 +18,7 @@ public class Warrior extends Player {
 
     public Warrior(String name, double x, double y) {
         super(name, PlayerType.WARRIOR, x, y, 32, 32);
+        this.attackCooldown = 0.5;
     }
 
     @Override

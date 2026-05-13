@@ -1,4 +1,4 @@
-/*
+
 package com.example.soulspire.Util;
 
 import javafx.scene.media.AudioClip;
@@ -10,93 +10,93 @@ import java.util.HashMap;
 import java.util.Map;
 
 
- * Manages sound effects and background music playback.
- * Sound effects use {@link AudioClip} (short, can overlap).
- * Background music uses {@link MediaPlayer} (long, looped).
 
 public class SoundManager {
 
-    private static final GameLogger logger = GameLogger.getLogger(SoundManager.class);
+    private static MediaPlayer music;
+    private static double volume = 0.1;
+    private static boolean muted = false;
+    private static final Map<String, AudioClip> cache = new HashMap<>();
 
-    private final Map<String, AudioClip> sounds;
-    private MediaPlayer bgMusic;
-    private boolean muted;
-    private double volume;
-
-    public SoundManager() {
-        this.sounds = new HashMap<>();
-        this.muted = false;
-        this.volume = 0.7;
-    }
-
-
-    public void loadSound(String name, String path) {
-        try {
-            URL resource = getClass().getResource(path);
-            if (resource == null) {
-                logger.warn("Sound not found: " + path);
-                return;
-            }
-            AudioClip clip = new AudioClip(resource.toExternalForm());
-            sounds.put(name, clip);
-            logger.info("Loaded sound: " + name);
-        } catch (Exception e) {
-            logger.error("Failed to load sound: " + path, e);
-        }
-    }
-
-
-    public void playSound(String name) {
-        if (muted) return;
-        AudioClip clip = sounds.get(name);
-        if (clip != null) {
-            clip.play(volume);
-        }
-    }
-
-
+    /**
+     * Plays background music in a loop.
+     * @param path
+     */
     public void playMusic(String path) {
         stopMusic();
-        try {
-            URL resource = getClass().getResource(path);
-            if (resource == null) {
-                logger.warn("Music not found: " + path);
-                return;
-            }
-            Media media = new Media(resource.toExternalForm());
-            bgMusic = new MediaPlayer(media);
-            bgMusic.setCycleCount(MediaPlayer.INDEFINITE);
-            bgMusic.setVolume(volume);
-            if (!muted) bgMusic.play();
-            logger.info("Playing music: " + path);
-        } catch (Exception e) {
-            logger.error("Failed to play music: " + path, e);
+
+        URL url = getClass().getResource(path);
+        if (url == null) {
+            return;
+        }
+
+        Media media = new Media(url.toExternalForm());
+        music = new MediaPlayer(media);
+        music.setCycleCount(MediaPlayer.INDEFINITE);
+        music.setVolume(volume);
+        music.play();
+
+
+    }
+
+    /**
+     * Plays one shot sound effect.
+     * @param path
+     */
+    public static void playEffect(String path) {
+        if (muted) {
+            return;
+        }
+        AudioClip clip = cache.get(path);
+        if (clip == null) {
+            URL url = SoundManager.class.getResource(path);
+            if (url == null) { System.err.println("Sound not found: " + path); return; }
+            clip = new AudioClip(url.toExternalForm());
+            cache.put(path, clip);
+        }
+        clip.play(volume);
+    }
+
+    /**
+     * Stops music.
+     */
+    private void stopMusic() {
+        if(music != null) {
+            music.stop();
+            music = null;
+        }
+
+    }
+
+    /**
+     * Mutes music in the game.
+     */
+    public static void toggleMute () {
+        muted = !muted;
+        if (music != null) {
+            music.setVolume(muted ? 0 : volume);
+        }
+
+    }
+
+    /**
+     * Volume 0.0 - 0.1
+     * @param volume
+     */
+    public void setVolume (double volume) {
+        volume = Math.max(0, Math.min(1, volume));
+        if (music != null && !muted) {
+            music.setVolume(volume);
         }
     }
 
-
-    public void stopMusic() {
-        if (bgMusic != null) {
-            bgMusic.stop();
-            bgMusic.dispose();
-            bgMusic = null;
-        }
+    public double getVolume() {
+        return volume;
     }
 
-    public void setMuted(boolean muted) {
-        this.muted = muted;
-        if (bgMusic != null) {
-            if (muted) bgMusic.pause(); else bgMusic.play();
-        }
+    public static boolean isMuted() {
+        return muted;
     }
 
-    public void setVolume(double volume) {
-        this.volume = Math.max(0, Math.min(1.0, volume));
-        if (bgMusic != null) bgMusic.setVolume(this.volume);
-    }
-
-    public boolean isMuted() { return muted; }
-    public double getVolume() { return volume; }
 }
 
- */

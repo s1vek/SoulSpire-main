@@ -219,6 +219,12 @@ public abstract class Enemy extends LivingEntity {
 
     }
 
+    @Override
+    public void takeDamage(int amount) {
+        super.takeDamage(amount);
+        aggroed = true;
+    }
+
     /**
      * Scales a base stat value according to the floor number and difficulty multiplier.
      *

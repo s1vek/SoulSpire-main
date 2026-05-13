@@ -21,6 +21,7 @@ public class Shaman extends Player {
 
     public Shaman(String name, double x, double y) {
         super(name, PlayerType.SHAMAN, x, y, 32, 32);
+        this.attackCooldown = 0.5;
     }
 
     @Override
