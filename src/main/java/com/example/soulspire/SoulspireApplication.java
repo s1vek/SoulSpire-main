@@ -4,6 +4,7 @@ import com.example.soulspire.Core.*;
 import com.example.soulspire.UI.CharacterSelectScreen;
 import com.example.soulspire.UI.GameScreen;
 import com.example.soulspire.UI.ScreenManager;
+import com.example.soulspire.World.Tile;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,6 +16,8 @@ import java.io.IOException;
 public class SoulspireApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+
+        Tile.loadTextures();
 
         InputHandler inputHandler = new InputHandler();
 
