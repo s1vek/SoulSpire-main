@@ -48,7 +48,12 @@ public class ScreenManager {
             case CHARACTER_SELECT  -> root.getChildren().add(characterSelect);
             case PAUSED            -> root.getChildren().add(pauseMenu);
             case GAME_OVER         -> root.getChildren().add(gameOver);
-            case VICTORY           -> root.getChildren().add(victory);
+            case VICTORY -> {
+                if (engine.getGameClock() != null) {
+                    victory.setFinalTime(engine.getGameClock().getFormattedTime());
+                }
+                root.getChildren().add(victory);
+            }
             case PLAYING, SAFE_ZONE -> { }
         }
 

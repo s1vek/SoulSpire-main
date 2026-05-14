@@ -1,11 +1,13 @@
 package com.example.soulspire.Core;
 import com.example.soulspire.Combat.CombatSystem;
 import com.example.soulspire.Crafting.CraftingSystem;
+import com.example.soulspire.Entity.Enemy.FinalBoss;
 import com.example.soulspire.Entity.Entity;
 import com.example.soulspire.Entity.Npc.Blacksmith;
 import com.example.soulspire.Entity.Player.*;
 import com.example.soulspire.Entity.Direction;
 import com.example.soulspire.UI.*;
+import com.example.soulspire.Util.GameClock;
 import com.example.soulspire.Util.GameLogger;
 import com.example.soulspire.World.Floor;
 import com.example.soulspire.World.Tile;
@@ -42,6 +44,9 @@ public class GameEngine {
     private GameScreen gameScreen;
     private CraftingSystem craftingSystem;
     private CraftingUI craftingUI;
+    private GameClock gameClock;
+    private boolean finalBossWasAlive = false;
+
 
 
     public GameEngine(InputHandler inputHandler) {
@@ -86,6 +91,8 @@ public class GameEngine {
             gameScreen.attachCraftingUI(craftingUI);
         }
 
+        gameClock = new GameClock();
+        gameClock.start();
         logger.info("New game started");
     }
 
@@ -187,6 +194,28 @@ public class GameEngine {
         return null;
     }
 
+    private void checkVictory() {
+        Floor floor = tower.getCurrentFloor();
+        boolean aliveNow = false;
+        for (Entity e : floor.getEntities()) {
+            if (e instanceof FinalBoss && e.isActive()) {
+                aliveNow = true;
+                break;
+            }
+        }
+
+        if (aliveNow) {
+            finalBossWasAlive = true;
+        } else if (finalBossWasAlive) {
+            finalBossWasAlive = false;
+            stateManager.setState(GameState.VICTORY);
+            if (screenManager != null) {
+                screenManager.showScreen(GameState.VICTORY);
+            }
+            logger.info("VICTORY — final boss defeated");
+        }
+    }
+
     /**
      * Attempts to move the player, checking tile collisions first.
      */
@@ -247,6 +276,7 @@ public class GameEngine {
         }
 
         checkFloorTransition();
+        checkVictory();
         inputHandler.update();
 
     }
@@ -426,4 +456,5 @@ public class GameEngine {
     public void setScreenManager(ScreenManager sm) { this.screenManager = sm; }
     public void setInventoryUI(InventoryUI ui) { this.inventoryUI = ui; }
     public void setGameScreen(GameScreen gs) { this.gameScreen = gs; }
+    public GameClock getGameClock() { return gameClock; }
 }

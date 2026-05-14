@@ -3,10 +3,7 @@ package com.example.soulspire.Util;
 import com.example.soulspire.Ability.AbilityType;
 import com.example.soulspire.Core.GameConfig;
 import com.example.soulspire.Entity.Chest;
-import com.example.soulspire.Entity.Enemy.BossEnemy;
-import com.example.soulspire.Entity.Enemy.ChestGuardian;
-import com.example.soulspire.Entity.Enemy.MeleeEnemy;
-import com.example.soulspire.Entity.Enemy.RangedEnemy;
+import com.example.soulspire.Entity.Enemy.*;
 import com.example.soulspire.Entity.Npc.Blacksmith;
 import com.example.soulspire.Item.SoulEcho;
 import com.example.soulspire.Item.SoulEchoType;
@@ -143,6 +140,11 @@ public class FloorParser {
             case 'K' -> {
                 floor.setTileAt(x, y, TileType.FLOOR);
                 floor.addEntity(new BossEnemy(px, py, fn));
+            }
+
+            case 'F' -> {
+                floor.setTileAt(x, y, TileType.FLOOR);
+                floor.addEntity(new FinalBoss(px, py, fn));
             }
 
             default -> {

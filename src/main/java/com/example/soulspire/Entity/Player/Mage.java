@@ -30,8 +30,12 @@ public class Mage extends Player {
 
     @Override
     public void attack(double targetX, double targetY) {
-        if (!canAttack()) return;
-        if (currentFloor == null) return;
+        if (!canAttack()) {
+            return;
+        }
+        if (currentFloor == null) {
+            return;
+        }
 
         Projectile p = new Projectile(getCenterX() - 4, getCenterY() - 4, targetX, targetY, PROJECTILE_SPEED, getEffectiveAttackDamage(), PROJECTILE_RANGE, this);
         p.setColor(Color.MEDIUMPURPLE);

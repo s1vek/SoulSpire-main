@@ -1,28 +1,19 @@
 {
   "player": {
-    "currentHealth": 126,
+    "currentHealth": 150,
     "moveSpeed": 100,
     "lives": 3,
     "defense": 15,
     "name": "Hero",
-    "x": 2468.827422348159,
-    "y": 1495.7583524448637,
+    "x": 184.39606000000012,
+    "y": 281.41002999999995,
     "maxHealth": 150,
     "type": "WARRIOR",
     "inventory": {
-      "materials": [
-        {
-          "type": "IRON_ORE",
-          "quantity": 3
-        },
-        {
-          "type": "ETHEREAL_DUST",
-          "quantity": 1
-        }
-      ],
+      "materials": [],
       "equipped": []
     },
     "attackDamage": 20
   },
-  "tower": {"currentFloor": 6}
+  "tower": {"currentFloor": 9}
 }

@@ -33,6 +33,7 @@ public class HUDOverlay extends BorderPane {
     private Label[] slotCdLabels;
     private Label[] slotNames;
     private Label pickupLabel;
+    private Label timeLabel;
 
     public HUDOverlay(GameEngine engine) {
         this.engine = engine;
@@ -51,6 +52,10 @@ public class HUDOverlay extends BorderPane {
 
         floorLabel = new Label("Floor: 1");
         floorLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14;");
+
+        timeLabel = new Label("Time: 00:00");
+        timeLabel.setStyle("-fx-text-fill: white; -fx-font-size: 14;");
+        topBar.getChildren().add(timeLabel);
 
         topBar.getChildren().addAll(healthBar, livesLabel, floorLabel);
         setTop(topBar);
@@ -151,6 +156,10 @@ public class HUDOverlay extends BorderPane {
             pickupLabel.setText(player.getPickupMessage());
         } else {
             pickupLabel.setText("");
+        }
+
+        if (engine.getGameClock() != null) {
+            timeLabel.setText("Time: " + engine.getGameClock().getFormattedTime());
         }
 
     }

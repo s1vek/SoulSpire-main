@@ -4,7 +4,7 @@ public enum PlayerType {
 
     WARRIOR("Warrior", 150, 20, 15, 100),
     SHAMAN("Shaman", 90, 15, 10, 100),
-    MAGE("Mage", 70, 18, 5, 100),
+    MAGE("Mage", 70, 190, 5, 100),
     HUNTER("Hunter", 80, 12, 8, 100);
 
     private final String displayName;

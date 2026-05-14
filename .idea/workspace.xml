@@ -5,18 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ee9e9b2a-ab29-431e-a6c0-bcad46f54adf" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Item/SoulEchoType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Entity/Enemy/FinalBoss.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Util/GameClock.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Ability/ChargeAbility.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Ability/ChargeAbility.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Core/GameEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Core/GameEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Entity/Chest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Entity/Chest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Entity/Player/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Entity/Player/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Entity/Player/Warrior.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Entity/Player/Warrior.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Item/SoulEcho.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Item/SoulEcho.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Entity/Player/Mage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Entity/Player/Mage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Entity/Player/PlayerType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Entity/Player/PlayerType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/soulspire/UI/HUDOverlay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/UI/HUDOverlay.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/soulspire/UI/ScreenManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/UI/ScreenManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/soulspire/UI/VictoryScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/UI/VictoryScreen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Util/FloorParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/Util/FloorParser.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/soulspire/World/Tower.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/soulspire/World/Tower.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/floors/floor_0.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/floors/floor_0.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/floors/floor_9.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/floors/floor_9.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/floors/floorcheatsheet.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/floors/floorcheatsheet.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/saves/soulspire_save.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/saves/soulspire_save.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +29,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -87,6 +90,8 @@
       <updated>1778757059657</updated>
       <workItem from="1778757061433" duration="1468000" />
       <workItem from="1778761891691" duration="7701000" />
+      <workItem from="1778769676187" duration="1905000" />
+      <workItem from="1778773067447" duration="481000" />
     </task>
     <servers />
   </component>

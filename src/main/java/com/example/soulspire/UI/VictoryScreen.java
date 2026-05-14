@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
  */
 public class VictoryScreen extends VBox {
 
+    private final Label timeLabel;
+
     public VictoryScreen(GameEngine engine, ScreenManager screenManager) {
         setAlignment(Pos.CENTER);
         setSpacing(20);
@@ -20,10 +22,13 @@ public class VictoryScreen extends VBox {
         setStyle("-fx-background-color: rgba(0,0,0,0.9);");
 
         Label title = new Label("VICTORY!");
-        title.setStyle("-fx-text-fill: gold; -fx-font-size: 48;");
+        title.setStyle("-fx-text-fill: gold; -fx-font-size: 48;  -fx-font-family: 'MedievalSharp';");
 
         Label subtitle = new Label("You have conquered the Soulspire!");
-        subtitle.setStyle("-fx-text-fill: #ccc; -fx-font-size: 16;");
+        subtitle.setStyle("-fx-text-fill: #ccc; -fx-font-size: 16; -fx-font-family: 'MedievalSharp';");
+
+        timeLabel = new Label("Time: 00:00");
+        timeLabel.setStyle("-fx-text-fill: gold; -fx-font-size: 20;  -fx-font-family: 'MedievalSharp';");
 
         Button menuBtn = new Button("Return to Menu");
         menuBtn.setPrefWidth(200);
@@ -31,8 +36,14 @@ public class VictoryScreen extends VBox {
             engine.getStateManager().setState(GameState.MAIN_MENU);
             screenManager.showScreen(GameState.MAIN_MENU);
         });
-        menuBtn.setFocusTraversable(false);
 
-        getChildren().addAll(title, subtitle, menuBtn);
+        getChildren().addAll(title, subtitle, timeLabel, menuBtn);
+    }
+
+    /**
+     * Updates the displayed time. Called by ScreenManager before showing.
+     */
+    public void setFinalTime(String formattedTime) {
+        timeLabel.setText("Final Time: " + formattedTime);
     }
 }

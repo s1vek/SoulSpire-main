@@ -13,6 +13,7 @@ G chest guardian
 c chest
 S blacksmith
 K boss
+F final boss
 @ players spawn
 
 Dimensions - 60r x 40l
