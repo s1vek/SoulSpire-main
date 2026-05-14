@@ -43,6 +43,7 @@ public class GameEngine {
     private CraftingSystem craftingSystem;
     private CraftingUI craftingUI;
 
+
     public GameEngine(InputHandler inputHandler) {
         this.inputHandler = inputHandler;
         this.stateManager = new GameStateManager();
@@ -236,6 +237,10 @@ public class GameEngine {
             player.update(deltaTime);
         }
 
+        if (player != null && player.isDead()) {
+            handlePlayerDeath();
+        }
+
         if (hud != null) {
             hud.update();
         }
@@ -282,6 +287,25 @@ public class GameEngine {
      * Handles player death: respawn or game over.
      */
     private void handlePlayerDeath() {
+        if (player == null || !player.isDead()) {
+            return;
+        }
+
+        if (player.getLives() <= 1) {
+            player.setLives(0);
+            stateManager.setState(GameState.GAME_OVER);
+            if (screenManager != null) {
+                screenManager.showScreen(GameState.GAME_OVER);
+            }
+            logger.info("GAME OVER — all lives spent");
+            return;
+        }
+
+        tower.resetCurrentFloor();
+        Floor floor = tower.getCurrentFloor();
+        player.setCurrentFloor(floor);
+        player.respawn(floor.getSpawnX(), floor.getSpawnY());
+        logger.info("Player respawned — lives remaining: " + player.getLives());
 
     }
 

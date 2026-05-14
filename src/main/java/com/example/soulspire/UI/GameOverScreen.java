@@ -20,10 +20,10 @@ public class GameOverScreen extends VBox {
         setStyle("-fx-background-color: rgba(0,0,0,0.9);");
 
         Label title = new Label("GAME OVER");
-        title.setStyle("-fx-text-fill: #ff4444; -fx-font-size: 48;");
+        title.setStyle("-fx-text-fill: #ff4444; -fx-font-size: 48; -fx-font-family: 'MedievalSharp';");
 
         Label subtitle = new Label("The tower has claimed another soul...");
-        subtitle.setStyle("-fx-text-fill: #aaa; -fx-font-size: 16;");
+        subtitle.setStyle("-fx-text-fill: #aaa; -fx-font-size: 16; -fx-font-family: 'MedievalSharp';");
 
         Button menuBtn = new Button("Return to Menu");
         menuBtn.setPrefWidth(200);

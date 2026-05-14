@@ -175,7 +175,15 @@ public abstract class Player extends LivingEntity implements Saveable {
      * @param spawnY y position to respawn at
      */
     public void respawn(double spawnX, double spawnY) {
-
+        lives--;
+        setX(spawnX);
+        setY(spawnY);
+        setCurrentHealth(maxHealth);
+        setActive(true);
+        invulnerable = true;
+        invulnerabilityTimer = 2.0;
+        currentAttackCooldown = 0;
+        facing = Direction.DOWN;
     }
 
     /**

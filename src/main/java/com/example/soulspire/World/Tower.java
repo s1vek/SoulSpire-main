@@ -45,6 +45,22 @@ public class Tower implements Saveable {
     }
 
     /**
+     * Regenerates the current floor - used after players death
+     */
+    public void resetCurrentFloor() {
+        int i = currentFloorIndex;
+        boolean safe = (i > 0 && i % GameConfig.SAFE_ZONE_INTERVAL == 0);
+
+        Floor floor = FloorParser.loadFloor(i, safe);
+        if (floor != null) {
+            floors.set(i, floor);
+            logger.info("Floor " + i + " has been reset");
+        } else {
+            logger.warn("Could not reset floor " + i + " — JSON missing");
+        }
+    }
+
+    /**
      * Advances to the next floor.
      * @return true if there is a next floor, false if this was the last one
      */
