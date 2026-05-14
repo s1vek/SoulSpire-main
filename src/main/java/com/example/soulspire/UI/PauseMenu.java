@@ -2,6 +2,8 @@ package com.example.soulspire.UI;
 
 import com.example.soulspire.Core.GameEngine;
 import com.example.soulspire.Core.GameState;
+import com.example.soulspire.Core.SaveManager;
+import com.example.soulspire.Entity.Player.Player;
 import com.example.soulspire.Util.GameLogger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,6 +11,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+
+import java.util.Map;
 
 /**
  * Pause menu overlay with resume, save, toggle logging, and quit options.
@@ -35,10 +39,7 @@ public class PauseMenu extends VBox {
         Button saveBtn = new Button("Save Game");
         saveBtn.setPrefWidth(180);
         saveBtn.setOnAction(e -> {
-            var task = com.example.soulspire.Core.SaveManager.createAutoSaveTask(
-                    engine.getPlayer(), engine.getTower()
-            );
-            new Thread(task).start();
+            SaveManager.save(engine.getPlayer(), engine.getTower());
         });
         saveBtn.setFocusTraversable(false);
 

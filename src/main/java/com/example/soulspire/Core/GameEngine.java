@@ -16,6 +16,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import com.example.soulspire.UI.CraftingUI;
 
+import java.util.Map;
+
 
 /**
  * Central game engine that coordinates all game systems.
@@ -85,7 +87,6 @@ public class GameEngine {
 
         logger.info("New game started");
     }
-
 
     private void checkFloorTransition() {
         if (player == null) {
@@ -348,6 +349,44 @@ public class GameEngine {
         gc.setStroke(Color.WHITE);
         gc.setLineWidth(2);
         gc.strokeLine(px, py, px + dirX * 25, py + dirY * 25);
+    }
+
+
+    public void loadGame() {
+        Map<String, Object> data = SaveManager.load();
+        if (data == null) {
+            logger.warn("No save data to load");
+            return;
+        }
+
+        Map<String, Object> playerData = (Map<String, Object>) data.get("player");
+        Map<String, Object> towerData = (Map<String, Object>) data.get("tower");
+
+        tower.generateFloors();
+        tower.loadSaveData(towerData);
+
+        PlayerType type = PlayerType.valueOf((String) playerData.get("type"));
+        String name = (String) playerData.get("name");
+
+        this.player = switch (type) {
+            case WARRIOR -> new Warrior(name, 0, 0);
+            case SHAMAN  -> new Shaman(name, 0, 0);
+            case HUNTER  -> new Hunter(name, 0, 0);
+            case MAGE    -> new Mage(name, 0, 0);
+        };
+        player.loadSaveData(playerData);
+        player.setCurrentFloor(tower.getCurrentFloor());
+        player.setCombatSystem(combatSystem);
+
+        if (gameScreen != null) {
+            inventoryUI = new InventoryUI(player.getInventory());
+            gameScreen.attachInventoryUI(inventoryUI);
+            craftingUI = new CraftingUI(craftingSystem, player.getInventory());
+            gameScreen.attachCraftingUI(craftingUI);
+        }
+
+        stateManager.setState(GameState.PLAYING);
+        logger.info("Game loaded");
     }
 
     /**

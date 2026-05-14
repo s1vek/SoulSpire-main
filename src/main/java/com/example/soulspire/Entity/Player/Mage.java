@@ -62,8 +62,4 @@ public class Mage extends Player {
         }
     }
 
-    @Override
-    public Map<String, Object> toSaveData() {
-        return Map.of();
-    }
 }

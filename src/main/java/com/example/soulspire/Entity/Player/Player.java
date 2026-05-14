@@ -15,6 +15,7 @@ import com.example.soulspire.World.Floor;
 import com.example.soulspire.World.Tile;
 import com.example.soulspire.World.TileType;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,8 +89,6 @@ public abstract class Player extends LivingEntity implements Saveable {
         this.name = name;
         this.playerType = playerType;
         this.inventory = new Inventory();
-        inventory.addItem(new com.example.soulspire.Item.Material(com.example.soulspire.Item.MaterialType.IRON_ORE, 99));
-        inventory.addItem(new com.example.soulspire.Item.Material(com.example.soulspire.Item.MaterialType.ETHEREAL_DUST, 99));
         this.abilities = new Ability[ABILITY_COUNT];
         this.lives = GameConfig.PLAYER_LIVES;
         this.attackCooldown = 0.15;
@@ -248,17 +247,48 @@ public abstract class Player extends LivingEntity implements Saveable {
         currentAttackCooldown = attackCooldown;
     }
 
-    /*
-    @Override
+
     public Map<String, Object> toSaveData() {
+        System.out.println(">>> INSIDE toSaveData");
+        System.out.println(">>> this.name = " + this.name);
+        System.out.println(">>> this.playerType = " + this.playerType);
+        System.out.println(">>> this.x = " + this.x);
+        System.out.println(">>> this.maxHealth = " + this.maxHealth);
 
+        Map<String, Object> data = new HashMap<>();
+        data.put("name", name);
+        data.put("type", playerType.name());
+        data.put("x", x);
+        data.put("y", y);
+        data.put("lives", lives);
+        data.put("currentHealth", currentHealth);
+        data.put("maxHealth", maxHealth);
+        data.put("attackDamage", attackDamage);
+        data.put("defense", defense);
+        data.put("moveSpeed", moveSpeed);
+        data.put("inventory", inventory.toSaveData());
+
+        System.out.println(">>> data size: " + data.size());
+        System.out.println(">>> data: " + data);
+        return data;
     }
-
-     */
 
     @Override
     public void loadSaveData(Map<String, Object> data) {
+        this.name = (String) data.get("name");
+        this.x = ((Number) data.get("x")).doubleValue();
+        this.y = ((Number) data.get("y")).doubleValue();
+        this.lives = ((Number) data.get("lives")).intValue();
+        this.currentHealth = ((Number) data.get("currentHealth")).intValue();
+        this.maxHealth = ((Number) data.get("maxHealth")).intValue();
+        this.attackDamage = ((Number) data.get("attackDamage")).intValue();
+        this.defense = ((Number) data.get("defense")).intValue();
+        this.moveSpeed = ((Number) data.get("moveSpeed")).doubleValue();
 
+        Object invObj = data.get("inventory");
+        if (invObj instanceof Map<?,?> invMap) {
+            inventory.loadSaveData((Map<String, Object>) invMap);
+        }
     }
 
     /**

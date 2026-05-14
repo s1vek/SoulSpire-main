@@ -79,8 +79,4 @@ public class Shaman extends Player {
         }
     }
 
-    @Override
-    public Map<String, Object> toSaveData() {
-        return Map.of();
-    }
 }

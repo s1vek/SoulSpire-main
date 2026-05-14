@@ -76,9 +76,4 @@ public class Warrior extends Player {
             gc.strokeRect(screenX - 2, screenY - 2, getWidth() + 4, getHeight() + 4);
         }
     }
-
-    @Override
-    public Map<String, Object> toSaveData() {
-        return Map.of();
-    }
 }

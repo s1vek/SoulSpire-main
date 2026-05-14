@@ -1,0 +1,22 @@
+{
+  "player": {
+    "currentHealth": 80,
+    "moveSpeed": 100,
+    "lives": 3,
+    "defense": 8,
+    "name": "Hero",
+    "x": 99.7898899999999,
+    "y": 547.3024499999998,
+    "maxHealth": 80,
+    "type": "HUNTER",
+    "inventory": {
+      "materials": [{
+        "type": "IRON_ORE",
+        "quantity": 1
+      }],
+      "equipped": []
+    },
+    "attackDamage": 12
+  },
+  "tower": {"currentFloor": 0}
+}

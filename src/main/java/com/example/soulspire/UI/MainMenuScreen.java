@@ -45,7 +45,8 @@ public class MainMenuScreen extends VBox {
         loadBtn.setPrefWidth(200);
         loadBtn.setDisable(!SaveManager.hasSaveFile());
         loadBtn.setOnAction(e -> {
-            // TODO: load save data and restore game state
+            engine.loadGame();
+            screenManager.showScreen(com.example.soulspire.Core.GameState.PLAYING);
         });
         loadBtn.setFocusTraversable(false);
 

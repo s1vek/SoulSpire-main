@@ -40,7 +40,7 @@ public class GameConfig {
     public static final double TARGET_FPS = 60.0;
 
     /** Default file path for save data. */
-    public static final String SAVE_FILE_PATH = "soulspire_save.json";
+    public static final String SAVE_FILE_PATH = "src/main/resources/saves/soulspire_save.json";
 
     /** Maximum number of items the player can carry. */
     public static final int INVENTORY_MAX_SIZE = 20;

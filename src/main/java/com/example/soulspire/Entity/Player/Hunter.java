@@ -65,8 +65,4 @@ public class Hunter extends Player {
         gc.fillRect(screenX, screenY, getWidth(), getHeight());
     }
 
-    @Override
-    public Map<String, Object> toSaveData() {
-        return Map.of();
-    }
 }
