@@ -3,12 +3,9 @@ package com.example.soulspire.Core;
 import com.example.soulspire.Entity.Player.Player;
 import com.example.soulspire.Util.GameLogger;
 import com.example.soulspire.World.Tower;
-
-import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
+
 
 /**
  * Handles saving and loading game state to/from a JSON file.
@@ -57,8 +54,7 @@ public class SaveManager {
                 updateMessage("Saving...");
                 save(player, tower);
                 updateMessage("Saved!");
-                return null;
-            }
+                return null;}
         };
     }
 

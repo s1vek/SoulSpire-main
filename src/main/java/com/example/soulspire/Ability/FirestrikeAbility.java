@@ -1,7 +1,4 @@
 package com.example.soulspire.Ability;
-
-import com.example.soulspire.Ability.Ability;
-import com.example.soulspire.Ability.AbilityType;
 import com.example.soulspire.Entity.Player.Player;
 
 /**
@@ -41,8 +38,7 @@ public class FirestrikeAbility extends Ability {
         double centerY = caster.getCenterY() + dirY * 40;
 
         int damage = (int)(caster.getAttackDamage() * DAMAGE_MULTIPLIER);
-        combat.processAreaDamage(centerX, centerY, RANGE, damage,
-                floor.getEntities(), caster);
+        combat.processAreaDamage(centerX, centerY, RANGE, damage, floor.getEntities(), caster);
 
         resetCooldown();
 

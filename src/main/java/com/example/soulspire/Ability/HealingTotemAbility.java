@@ -1,9 +1,5 @@
 package com.example.soulspire.Ability;
-
-import com.example.soulspire.Ability.Ability;
-import com.example.soulspire.Ability.AbilityType;
 import com.example.soulspire.Entity.Player.Player;
-import com.example.soulspire.Entity.Totem;
 
 /**
  * Shaman ability 1: Places a healing totem that periodically restores HP
@@ -21,6 +17,12 @@ public class HealingTotemAbility extends Ability {
         this.icon = loadIcon("/com/example/soulspire/images/healtotem.png");
     }
 
+    /**
+     * Executing HealingTotem ability.
+     * @param caster  the player using this ability
+     * @param targetX mouse X position in world coordinates
+     * @param targetY mouse Y position in world coordinates
+     */
     @Override
     public void execute(Player caster, double targetX, double targetY) {
         if (currentCooldown > 0) {
@@ -30,12 +32,7 @@ public class HealingTotemAbility extends Ability {
             return;
         }
 
-        com.example.soulspire.Entity.Totem totem = new com.example.soulspire.Entity.Totem(
-                caster.getCenterX() - 12, caster.getCenterY() - 12,
-                HEAL_AMOUNT, HEAL_INTERVAL,
-                RADIUS, DURATION,
-                caster
-        );
+        com.example.soulspire.Entity.Totem totem = new com.example.soulspire.Entity.Totem(caster.getCenterX() - 12, caster.getCenterY() - 12, HEAL_AMOUNT, HEAL_INTERVAL, RADIUS, DURATION, caster);
         caster.getCurrentFloor().addEntity(totem);
 
         resetCooldown();

@@ -40,6 +40,9 @@ public class GameStateManager {
         }
     }
 
+    /**
+     * Getters and setters.
+     */
     public GameState getState() { return currentState; }
     public GameState getPreviousState() { return previousState; }
     public boolean isPlaying() { return currentState == GameState.PLAYING; }

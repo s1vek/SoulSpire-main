@@ -1,5 +1,4 @@
 package com.example.soulspire.Ability;
-
 import com.example.soulspire.Entity.Player.Player;
 
 /**
@@ -20,6 +19,12 @@ public class IceBlockAbility extends Ability {
         this.icon = loadIcon("/com/example/soulspire/images/iceblock.png");
     }
 
+    /**
+     * Executing IceBlock ability.
+     * @param caster  the player using this ability
+     * @param targetX mouse X position in world coordinates
+     * @param targetY mouse Y position in world coordinates
+     */
     @Override
     public void execute(Player caster, double targetX, double targetY) {
         if (currentCooldown > 0 || active) {

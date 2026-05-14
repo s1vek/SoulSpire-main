@@ -12,7 +12,6 @@ r ranged enemy
 G chest guardian
 c free chest
 S blacksmith
-$ merchant
 K boss
 @ players spawn
 

@@ -23,6 +23,12 @@ public class ChargeAbility extends Ability {
         this.icon = loadIcon("/com/example/soulspire/images/charge.png");
     }
 
+    /**
+     * Exectuing Charge ability.
+     * @param caster  the player using this ability
+     * @param targetX mouse X position in world coordinates
+     * @param targetY mouse Y position in world coordinates
+     */
     @Override
     public void execute(Player caster, double targetX, double targetY) {
         if (currentCooldown > 0) {
@@ -56,7 +62,9 @@ public class ChargeAbility extends Ability {
             double centerX = checkX + caster.getWidth() / 2;
             double centerY = checkY + caster.getHeight() / 2;
             Tile tile = floor.getTileAtPixel(centerX, centerY);
-            if (tile == null || !tile.isWalkable()) break;
+            if (tile == null || !tile.isWalkable()) {
+                break;
+            }
             finalX = checkX;
             finalY = checkY;
         }

@@ -33,12 +33,7 @@ public class Mage extends Player {
         if (!canAttack()) return;
         if (currentFloor == null) return;
 
-        Projectile p = new Projectile(
-                getCenterX() - 4, getCenterY() - 4,
-                targetX, targetY,
-                PROJECTILE_SPEED, attackDamage,
-                PROJECTILE_RANGE, this
-        );
+        Projectile p = new Projectile(getCenterX() - 4, getCenterY() - 4, targetX, targetY, PROJECTILE_SPEED, getEffectiveAttackDamage(), PROJECTILE_RANGE, this);
         p.setColor(Color.MEDIUMPURPLE);
         currentFloor.addEntity(p);
 

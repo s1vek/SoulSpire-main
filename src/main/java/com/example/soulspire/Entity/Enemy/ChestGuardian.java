@@ -26,15 +26,7 @@ public class ChestGuardian extends Enemy {
      * @param guardedChest the chest this guardian protects
      */
     public ChestGuardian(double x, double y, int floorNumber, Chest guardedChest) {
-        super(x, y, 32, 32,
-                60,    // baseHealth
-                15,    // baseAttack
-                5,     // defense
-                50,   // moveSpeed
-                120,   // aggroRange (short — only near chest)
-                40,    // attackRange
-                1.0,   // attackCooldown
-                floorNumber);
+        super(x, y, 32, 32, 60, 15, 5, 50, 120, 40, 1.0, floorNumber);
         this.guardedChest = guardedChest;
         lootTable.addDrop(new Material(MaterialType.IRON_ORE, 2), 1.0);
         lootTable.addDrop(new Material(MaterialType.ETHEREAL_DUST, 1), 1.0);
@@ -47,6 +39,7 @@ public class ChestGuardian extends Enemy {
 
     @Override
     public void updateAI(Player target, double deltaTime) {
+
         if (isStunned()) {
             return;
         }

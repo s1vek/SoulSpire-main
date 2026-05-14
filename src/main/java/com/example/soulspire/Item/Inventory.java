@@ -163,6 +163,14 @@ public class Inventory implements Saveable {
                 .toList();
     }
 
+    public double getTotalMoveSpeedBonus() {
+        double total = 0;
+        for (Equipment e : equipped.values()) {
+            total += e.getMoveSpeedBonus();
+        }
+        return total;
+    }
+
     /**
      * @return true if the inventory has reached maximum capacity
      */

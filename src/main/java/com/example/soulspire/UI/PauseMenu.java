@@ -22,7 +22,7 @@ public class PauseMenu extends VBox {
         setStyle("-fx-background-color: rgba(0,0,0,0.7);");
 
         Label title = new Label("PAUSED");
-        title.setStyle("-fx-text-fill: white; -fx-font-size: 32;");
+        title.setStyle("-fx-text-fill: white; -fx-font-size: 32; -fx-font-family: 'MedievalSharp';");
 
         Button resumeBtn = new Button("Resume");
         resumeBtn.setPrefWidth(180);

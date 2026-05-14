@@ -8,7 +8,6 @@ import com.example.soulspire.Entity.Enemy.ChestGuardian;
 import com.example.soulspire.Entity.Enemy.MeleeEnemy;
 import com.example.soulspire.Entity.Enemy.RangedEnemy;
 import com.example.soulspire.Entity.Npc.Blacksmith;
-import com.example.soulspire.Entity.Npc.Merchant;
 import com.example.soulspire.Item.SoulEcho;
 import com.example.soulspire.World.Floor;
 import com.example.soulspire.World.TileType;
@@ -139,10 +138,7 @@ public class FloorParser {
                 floor.setTileAt(x, y, defaultFloorTile(floor));
                 floor.addEntity(new Blacksmith(px, py));
             }
-            case '$' -> {
-                floor.setTileAt(x, y, defaultFloorTile(floor));
-                floor.addEntity(new Merchant(px, py));
-            }
+
             case 'K' -> {
                 floor.setTileAt(x, y, TileType.FLOOR);
                 floor.addEntity(new BossEnemy(px, py, fn));

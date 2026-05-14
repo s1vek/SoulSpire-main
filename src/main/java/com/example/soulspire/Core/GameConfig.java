@@ -3,7 +3,6 @@ package com.example.soulspire.Core;
 public class GameConfig {
 
     private GameConfig() {
-        // Prevent instantiation — utility class
     }
 
     // === Window ===

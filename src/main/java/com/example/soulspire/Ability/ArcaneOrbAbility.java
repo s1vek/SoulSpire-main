@@ -1,10 +1,6 @@
 package com.example.soulspire.Ability;
-
-import com.example.soulspire.Ability.Ability;
-import com.example.soulspire.Ability.AbilityType;
 import com.example.soulspire.Entity.Player.Player;
 import com.example.soulspire.Entity.Projectile;
-import javafx.scene.paint.Color;
 
 /**
  * Mage ability 1: Fires a magic orb that explodes on impact dealing AoE damage.
@@ -20,19 +16,24 @@ public class ArcaneOrbAbility extends Ability {
         this.icon = loadIcon("/com/example/soulspire/images/arcaneorb.png");
     }
 
+    /**
+     * Executing ArcaneOrb ability.
+     * @param caster  the player using this ability
+     * @param targetX mouse X position in world coordinates
+     * @param targetY mouse Y position in world coordinates
+     */
     @Override
     public void execute(Player caster, double targetX, double targetY) {
-        if (currentCooldown > 0) return;
-        if (caster.getCurrentFloor() == null) return;
+        if (currentCooldown > 0) {
+            return;
+        }
+        if (caster.getCurrentFloor() == null) {
+            return;
+        }
 
         int damage = (int)(caster.getAttackDamage() * 2.0);
 
-        Projectile orb = new Projectile(
-                caster.getCenterX() - 8, caster.getCenterY() - 8,
-                targetX, targetY,
-                ORB_SPEED, damage,
-                ORB_RANGE, caster
-        );
+        Projectile orb = new Projectile(caster.getCenterX() - 8, caster.getCenterY() - 8, targetX, targetY, ORB_SPEED, damage, ORB_RANGE, caster);
         orb.setColor(javafx.scene.paint.Color.MAGENTA);
         orb.setExplosionRadius(EXPLOSION_RADIUS);
 

@@ -4,10 +4,9 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
- * Wraps JavaFX's {@link AnimationTimer} to provide a fixed-timestep game loop.
- * Calls {@link GameEngine#update(double)} and {@link GameEngine#render(GraphicsContext)}
- * every frame with the elapsed delta time.
+ * GameLoop class
  */
+
 public class GameLoop {
 
     private AnimationTimer timer;

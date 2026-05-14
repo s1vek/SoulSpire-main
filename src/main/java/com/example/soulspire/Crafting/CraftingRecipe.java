@@ -35,13 +35,21 @@ public class CraftingRecipe {
      * @return true if all required materials are available
      */
 
-    /*
+
     public boolean canCraft(Inventory inventory) {
+        for (Map.Entry<MaterialType, Integer> e : requiredMaterials.entrySet()) {
+            if (inventory.getMaterialCount(e.getKey()) < e.getValue()) {
+                return false;
+            }
+        }
+        return true;
 
     }
 
-     */
 
+    /**
+     * Getters and setters.
+     */
     public String getResultName() { return resultName; }
     public Equipment getResult() { return result; }
     public Map<MaterialType, Integer> getRequiredMaterials() { return requiredMaterials; }

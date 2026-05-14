@@ -8,30 +8,32 @@ public class Equipment extends Item {
 
     private int attackBonus;
     private int defenseBonus;
+    private double moveSpeedBonus;
     private EquipmentSlot slot;
 
-    /**
-     * Creates a new piece of equipment.
-     *
-     * @param name         display name
-     * @param description  tooltip text
-     * @param attackBonus  bonus to player's attack damage when equipped
-     * @param defenseBonus bonus to player's defense when equipped
-     * @param slot         which slot this item occupies (WEAPON or ARMOR)
-     */
     public Equipment(String name, String description, int attackBonus, int defenseBonus, EquipmentSlot slot) {
+        this(name, description, attackBonus, defenseBonus, 0, slot);
+    }
+
+    public Equipment(String name, String description, int attackBonus, int defenseBonus, double moveSpeedBonus, EquipmentSlot slot) {
         super(name, description);
         this.attackBonus = attackBonus;
         this.defenseBonus = defenseBonus;
+        this.moveSpeedBonus = moveSpeedBonus;
         this.slot = slot;
     }
 
     @Override
     public Item copy() {
-        return new Equipment(name, description, attackBonus, defenseBonus, slot);
+        return new Equipment(name, description, attackBonus, defenseBonus, moveSpeedBonus, slot);
     }
+
+    /**
+     * Getters and setters.
+     */
 
     public int getAttackBonus() { return attackBonus; }
     public int getDefenseBonus() { return defenseBonus; }
+    public double getMoveSpeedBonus() { return moveSpeedBonus; }
     public EquipmentSlot getSlot() { return slot; }
 }

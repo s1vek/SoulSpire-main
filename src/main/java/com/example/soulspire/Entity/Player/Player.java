@@ -88,6 +88,8 @@ public abstract class Player extends LivingEntity implements Saveable {
         this.name = name;
         this.playerType = playerType;
         this.inventory = new Inventory();
+        inventory.addItem(new com.example.soulspire.Item.Material(com.example.soulspire.Item.MaterialType.IRON_ORE, 99));
+        inventory.addItem(new com.example.soulspire.Item.Material(com.example.soulspire.Item.MaterialType.ETHEREAL_DUST, 99));
         this.abilities = new Ability[ABILITY_COUNT];
         this.lives = GameConfig.PLAYER_LIVES;
         this.attackCooldown = 0.15;
@@ -138,6 +140,12 @@ public abstract class Player extends LivingEntity implements Saveable {
         }
         ability.execute(this, targetX, targetY);
 
+    }
+
+    @Override
+    public void takeDamage(int amount) {
+        int reduced = Math.max(1, amount - inventory.getTotalDefenseBonus());
+        super.takeDamage(reduced);
     }
 
     /**
@@ -194,7 +202,9 @@ public abstract class Player extends LivingEntity implements Saveable {
     }
 
     private void checkTrapDamage(double deltaTime) {
-        if (currentFloor == null) return;
+        if (currentFloor == null) {
+            return;
+        }
         Tile t = currentFloor.getTileAtPixel(getCenterX(), getCenterY());
         if (t == null || t.getType() != TileType.TRAP) {
             trapDamageTimer = 0;
@@ -206,6 +216,15 @@ public abstract class Player extends LivingEntity implements Saveable {
             takeDamage(TRAP_DAMAGE);
             trapDamageTimer = TRAP_DAMAGE_INTERVAL;
         }
+    }
+
+    @Override
+    public double getMoveSpeed() {
+        return super.getMoveSpeed() + inventory.getTotalMoveSpeedBonus();
+    }
+
+    public int getEffectiveAttackDamage() {
+        return attackDamage + inventory.getTotalAttackBonus();
     }
 
     /**
@@ -241,6 +260,10 @@ public abstract class Player extends LivingEntity implements Saveable {
     public void loadSaveData(Map<String, Object> data) {
 
     }
+
+    /**
+     * Getters and setters.
+     */
 
     public String getName() { return name; }
     public PlayerType getPlayerType() { return playerType; }

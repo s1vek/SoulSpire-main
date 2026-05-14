@@ -72,6 +72,10 @@ public abstract class NPC extends Entity implements Interactable {
     public boolean canInteract() {
         return true;
     }
+
+    /**
+     * Getters and setters.
+     */
     public String getName() { return name; }
     public String[] getDialogueLines() { return dialogueLines; }
 }

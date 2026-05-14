@@ -49,8 +49,7 @@ public class Warrior extends Player {
         double centerX = getCenterX() + dirX * ATTACK_OFFSET;
         double centerY = getCenterY() + dirY * ATTACK_OFFSET;
 
-        combatSystem.processAreaDamage(centerX, centerY, ATTACK_RADIUS,
-                attackDamage, currentFloor.getEntities(), this);
+        combatSystem.processAreaDamage(centerX, centerY, ATTACK_RADIUS, getEffectiveAttackDamage(), currentFloor.getEntities(), this);
 
         resetAttackCooldown();
 

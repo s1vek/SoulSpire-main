@@ -42,12 +42,7 @@ public class Hunter extends Player {
             return;
         }
 
-        Projectile arrow = new Projectile(
-                getCenterX() - 4, getCenterY() - 4,
-                targetX, targetY,
-                ARROW_SPEED, attackDamage,
-                ARROW_RANGE, this
-        );
+        Projectile arrow = new Projectile(getCenterX() - 4, getCenterY() - 4, targetX, targetY, ARROW_SPEED, getEffectiveAttackDamage(), ARROW_RANGE, this);
         arrow.setColor(Color.FORESTGREEN);
         currentFloor.addEntity(arrow);
 

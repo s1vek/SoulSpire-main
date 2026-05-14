@@ -53,7 +53,9 @@ public abstract class Item {
      */
     public abstract Item copy();
 
-    // --- Getters ---
+    /**
+     * Getters and setters.
+     */
 
     public String getName() { return name; }
     public String getDescription() { return description; }

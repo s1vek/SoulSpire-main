@@ -70,6 +70,10 @@ public class Projectile extends Entity {
         gc.fillOval(getX() - cameraX, getY() - cameraY, getWidth(), getHeight());
     }
 
+    /**
+     * Getters and setters.
+     */
+
     public int getDamage() { return damage; }
     public Entity getOwner() { return owner; }
     public void setColor(Color color) { this.color = color; }

@@ -1,5 +1,9 @@
 package com.example.soulspire.Core;
 
+/**
+ * Enum used for game states.
+ */
+
 public enum GameState {
 
     /** Main menu — start new game, load save, settings, quit. */

@@ -65,14 +65,8 @@ public abstract class Enemy extends LivingEntity {
      * @param attackCooldown time between attacks in seconds
      * @param floorNumber   floor this enemy is on (for difficulty scaling)
      */
-    protected Enemy(double x, double y, double width, double height,
-                    int baseHealth, int baseAttack, int defense, double moveSpeed,
-                    double aggroRange, double attackRange, double attackCooldown,
-                    int floorNumber) {
-        super(x, y, width, height,
-                scaleValue(baseHealth, floorNumber),
-                scaleValue(baseAttack, floorNumber),
-                defense, moveSpeed);
+    protected Enemy(double x, double y, double width, double height, int baseHealth, int baseAttack, int defense, double moveSpeed, double aggroRange, double attackRange, double attackCooldown, int floorNumber) {
+        super(x, y, width, height, scaleValue(baseHealth, floorNumber), scaleValue(baseAttack, floorNumber), defense, moveSpeed);
         this.aggroRange = aggroRange;
         this.attackRange = attackRange;
         this.attackCooldown = attackCooldown;
@@ -254,6 +248,9 @@ public abstract class Enemy extends LivingEntity {
         return stunTimer > 0;
     }
 
+    /**
+     * Getters and setters.
+     */
     public LootTable getLootTable() { return lootTable; }
     public void setLootTable(LootTable lootTable) { this.lootTable = lootTable; }
     public boolean isAggroed() { return aggroed; }

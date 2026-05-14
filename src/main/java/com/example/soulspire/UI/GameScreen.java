@@ -17,6 +17,7 @@ public class GameScreen extends StackPane {
     private HUDOverlay hud;
     private GraphicsContext gc;
     private InventoryUI inventoryUI;
+    private CraftingUI craftingUI;
 
     public GameScreen(GameEngine engine) {
         canvas = new Canvas();
@@ -36,14 +37,20 @@ public class GameScreen extends StackPane {
         getChildren().add(ui);
     }
 
-    /**
-     * @return the graphics context for game rendering
-     */
-    public GraphicsContext getGraphicsContext() { return gc; }
+    public void attachCraftingUI(CraftingUI ui) {
+        this.craftingUI = ui;
+        ui.setVisible(false);
+        StackPane.setAlignment(ui, Pos.CENTER);
+        getChildren().add(ui);
+    }
+
 
     /**
-     * @return the HUD overlay
+     * Getters and setters.
      */
+
+    public GraphicsContext getGraphicsContext() { return gc; }
     public HUDOverlay getHud() { return hud; }
     public InventoryUI getInventoryUI() { return inventoryUI; }
+    public CraftingUI getCraftingUI() { return craftingUI; }
 }

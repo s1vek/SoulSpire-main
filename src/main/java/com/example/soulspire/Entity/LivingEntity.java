@@ -172,6 +172,9 @@ public abstract class LivingEntity extends Entity {
         return (double) currentHealth / maxHealth;
     }
 
+    /**
+     * Getters and setters.
+     */
 
     public int getMaxHealth() { return maxHealth; }
     public void setMaxHealth(int maxHealth) { this.maxHealth = maxHealth; }

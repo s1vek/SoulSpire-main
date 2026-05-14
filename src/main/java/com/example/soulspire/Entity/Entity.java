@@ -106,6 +106,10 @@ abstract public class Entity {
         return y + height / 2;
     }
 
+
+    /**
+     * Getters and setters.
+     */
     public double getX() { return x; }
     public void setX(double x) { this.x = x; }
     public double getY() { return y; }

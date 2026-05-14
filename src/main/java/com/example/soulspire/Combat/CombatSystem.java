@@ -1,5 +1,4 @@
 package com.example.soulspire.Combat;
-
 import com.example.soulspire.Entity.Entity;
 import com.example.soulspire.Entity.LivingEntity;
 import com.example.soulspire.Entity.Projectile;
@@ -8,8 +7,7 @@ import com.example.soulspire.Util.GameLogger;
 import java.util.List;
 
 /**
- * Handles all combat damage calculations — melee hits, projectile impacts,
- * and area-of-effect abilities.
+ * Handles all combat damage calculations — melee hits, projectile impacts and AOE abilities.
  */
 public class CombatSystem {
 
@@ -46,9 +44,15 @@ public class CombatSystem {
         double radiusSq = radius * radius;
 
         for (Entity e : entities) {
-            if (e == owner) continue;
-            if (!e.isActive()) continue;
-            if (!(e instanceof LivingEntity living)) continue;
+            if (e == owner) {
+                continue;
+            }
+            if (!e.isActive()) {
+                continue;
+            }
+            if (!(e instanceof LivingEntity living)) {
+                continue;
+            }
 
             double dx = e.getCenterX() - centerX;
             double dy = e.getCenterY() - centerY;

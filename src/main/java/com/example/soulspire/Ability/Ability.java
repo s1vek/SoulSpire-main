@@ -1,13 +1,11 @@
 package com.example.soulspire.Ability;
-
 import com.example.soulspire.Entity.Player.Player;
 import javafx.scene.image.Image;
 
 /**
  * Abstract base class for all character abilities.
- * Each of the four character classes has 3 abilities (mapped to keys 1, 2, 3),
- * <p>Every ability has a cooldown timer that prevents immediate reuse.
- * <p>Concrete abilities by character:</p>
+ * Each of the four character classes has 3 abilities
+ * Every ability has a cooldown timer that prevents immediate reuse.
  * <pre>
  * Warrior:  ChargeAbility, BladewhirlAbility, EnrageAbility
  * Mage:     ArcaneOrbAbility, IceBlockAbility, TeleportAbility
@@ -119,6 +117,9 @@ public abstract class Ability {
         }
     }
 
+    /**
+     * Getters and Setters.
+     */
     public String getName() { return name; }
     public String getDescription() { return description; }
     public double getCooldown() { return cooldown; }

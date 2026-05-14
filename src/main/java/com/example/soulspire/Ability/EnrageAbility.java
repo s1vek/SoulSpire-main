@@ -1,6 +1,4 @@
 package com.example.soulspire.Ability;
-
-
 import com.example.soulspire.Entity.Player.Player;
 
 /**
@@ -24,6 +22,12 @@ public class EnrageAbility extends Ability {
         this.icon = loadIcon("/com/example/soulspire/images/enrage.png");
     }
 
+    /**
+     * Executing Enrage ability.
+     * @param caster  the player using this ability
+     * @param targetX mouse X position in world coordinates
+     * @param targetY mouse Y position in world coordinates
+     */
     @Override
     public void execute(Player caster, double targetX, double targetY) {
         if (currentCooldown > 0 || active) {
@@ -46,9 +50,15 @@ public class EnrageAbility extends Ability {
 
     }
 
+    /**
+     * Update method mainly used for remaining time of enrage.
+     * @param deltaTime time elapsed since last frame in seconds
+     */
     @Override
     public void update(double deltaTime) {
-        if (currentCooldown > 0) currentCooldown -= deltaTime;
+        if (currentCooldown > 0) {
+            currentCooldown -= deltaTime;
+        }
 
         if (active) {
             remainingDuration -= deltaTime;
@@ -58,6 +68,9 @@ public class EnrageAbility extends Ability {
         }
     }
 
+    /**
+     * Deactivation of ability.
+     */
     private void deactivate() {
         if (activeCaster != null) {
             activeCaster.setAttackDamage(originalDamage);

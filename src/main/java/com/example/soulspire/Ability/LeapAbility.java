@@ -1,8 +1,4 @@
 package com.example.soulspire.Ability;
-
-import com.example.soulspire.Ability.Ability;
-import com.example.soulspire.Ability.AbilityType;
-import com.example.soulspire.Entity.Direction;
 import com.example.soulspire.Entity.Player.Player;
 import com.example.soulspire.World.Floor;
 import com.example.soulspire.World.Tile;
@@ -21,6 +17,12 @@ public class LeapAbility extends Ability {
         this.icon = loadIcon("/com/example/soulspire/images/leap.png");
     }
 
+    /**
+     * Executing of Leap ability.
+     * @param caster  the player using this ability
+     * @param targetX mouse X position in world coordinates
+     * @param targetY mouse Y position in world coordinates
+     */
     @Override
     public void execute(Player caster, double targetX, double targetY) {
         if (currentCooldown > 0) {

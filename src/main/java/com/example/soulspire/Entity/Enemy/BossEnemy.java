@@ -5,15 +5,12 @@ import com.example.soulspire.Entity.Projectile;
 import com.example.soulspire.Item.Material;
 import com.example.soulspire.Item.MaterialType;
 import com.example.soulspire.Util.GameLogger;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /**
  * The final boss of the tower, found on the last floor.
- * Has multiple combat phases that change behavior at health thresholds.
- * Phase 1 (100-50% HP): standard melee attacks.
- * Phase 2 (below 50% HP): faster attacks, increased damage.
  */
+
 public class BossEnemy extends Enemy {
 
     private static final GameLogger logger = GameLogger.getLogger(BossEnemy.class);
@@ -26,15 +23,7 @@ public class BossEnemy extends Enemy {
     private boolean phaseTransitioned;
 
     public BossEnemy(double x, double y, int floorNumber) {
-        super(x, y, 48, 48,
-                200,   // baseHealth (tanky)
-                25,    // baseAttack
-                10,    // defense
-                80,   // moveSpeed
-                400,   // aggroRange (always detects)
-                50,    // attackRange
-                1.2,   // attackCooldown
-                floorNumber);
+        super(x, y, 48, 48, 200, 25, 10, 80, 400, 50, 1.2, floorNumber);
         this.rangedCooldown = 3;
         lootTable.addDrop(new Material(MaterialType.IRON_ORE, 5), 1.0);
         lootTable.addDrop(new Material(MaterialType.ETHEREAL_DUST, 3), 1.0);

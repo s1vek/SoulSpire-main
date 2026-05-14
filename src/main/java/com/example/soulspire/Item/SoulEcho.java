@@ -47,6 +47,10 @@ public class SoulEcho extends Item {
         return new SoulEcho(name, description, modifierValue, targetAbilityType);
     }
 
+    /**
+     * Getters and setters.
+     */
+
     public double getModifierValue() { return modifierValue; }
     public AbilityType getTargetAbilityType() { return targetAbilityType; }
     public boolean isActive() { return active; }

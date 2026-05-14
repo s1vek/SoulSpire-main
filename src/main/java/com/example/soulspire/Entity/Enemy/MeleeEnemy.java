@@ -23,15 +23,7 @@ public class MeleeEnemy extends Enemy {
      * @param floorNumber current floor (for difficulty scaling)
      */
     public MeleeEnemy(double x, double y, int floorNumber) {
-        super(x, y, 28, 28,
-                40,    // baseHealth
-                12,    // baseAttack
-                3,     // defense
-                70,   // moveSpeed
-                200,   // aggroRange
-                40,    // attackRange
-                1.0,   // attackCooldown
-                floorNumber);
+        super(x, y, 28, 28, 40, 12, 3, 70, 200, 40, 1.0, floorNumber);
         lootTable.addDrop(new Material(MaterialType.IRON_ORE, 1), 0.6);
         lootTable.addDrop(new Material(MaterialType.ETHEREAL_DUST, 1), 0.15);
     }

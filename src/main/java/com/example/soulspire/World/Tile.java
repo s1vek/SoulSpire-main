@@ -76,6 +76,11 @@ public class Tile {
     }
 
     public boolean isWalkable() { return type.isWalkable(); }
+
+    /**
+     * Getters and setters.
+     */
+
     public TileType getType() { return type; }
     public void setType(TileType type) { this.type = type; }
 }

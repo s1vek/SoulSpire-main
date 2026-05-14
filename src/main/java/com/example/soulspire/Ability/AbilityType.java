@@ -1,5 +1,9 @@
 package com.example.soulspire.Ability;
 
+/**
+ * Enum used for types of abilities
+ */
+
 public enum AbilityType {
 
     /** Deals damage to enemies (Bladewhirl, ArcaneOrb, SpreadShot, Firestrike). */

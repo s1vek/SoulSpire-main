@@ -1,12 +1,5 @@
 package com.example.soulspire.Combat;
-
-import com.example.soulspire.Core.GameConfig;
 import com.example.soulspire.Entity.Entity;
-import com.example.soulspire.World.Floor;
-import com.example.soulspire.World.Tile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Provides static collision detection methods for entity-entity
@@ -15,7 +8,9 @@ import java.util.List;
 
 public class CollisionDetector {
 
-    private CollisionDetector() {}
+    private CollisionDetector() {
+
+    }
 
     /**
      * Checks if two entities' bounding boxes overlap.

@@ -1,18 +1,11 @@
 package com.example.soulspire.Core;
-
-import com.example.soulspire.Combat.CollisionDetector;
 import com.example.soulspire.Combat.CombatSystem;
+import com.example.soulspire.Crafting.CraftingSystem;
 import com.example.soulspire.Entity.Entity;
-import com.example.soulspire.Entity.Enemy.Enemy;
-import com.example.soulspire.Entity.Enemy.RangedEnemy;
-import com.example.soulspire.Entity.LivingEntity;
+import com.example.soulspire.Entity.Npc.Blacksmith;
 import com.example.soulspire.Entity.Player.*;
-import com.example.soulspire.Entity.Projectile;
 import com.example.soulspire.Entity.Direction;
-import com.example.soulspire.UI.GameScreen;
-import com.example.soulspire.UI.HUDOverlay;
-import com.example.soulspire.UI.InventoryUI;
-import com.example.soulspire.UI.ScreenManager;
+import com.example.soulspire.UI.*;
 import com.example.soulspire.Util.GameLogger;
 import com.example.soulspire.World.Floor;
 import com.example.soulspire.World.Tile;
@@ -21,6 +14,8 @@ import com.example.soulspire.World.Tower;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import com.example.soulspire.UI.CraftingUI;
+
 
 /**
  * Central game engine that coordinates all game systems.
@@ -43,6 +38,8 @@ public class GameEngine {
     private ScreenManager screenManager;
     private InventoryUI inventoryUI;
     private GameScreen gameScreen;
+    private CraftingSystem craftingSystem;
+    private CraftingUI craftingUI;
 
     public GameEngine(InputHandler inputHandler) {
         this.inputHandler = inputHandler;
@@ -51,6 +48,7 @@ public class GameEngine {
         this.tower = new Tower();
         this.cameraX = 0;
         this.cameraY = 0;
+        this.craftingSystem = new CraftingSystem();
     }
 
     /**
@@ -81,6 +79,8 @@ public class GameEngine {
         if (gameScreen != null && inventoryUI == null) {
             inventoryUI = new InventoryUI(player.getInventory());
             gameScreen.attachInventoryUI(inventoryUI);
+            craftingUI = new CraftingUI(craftingSystem, player.getInventory());
+            gameScreen.attachCraftingUI(craftingUI);
         }
 
         logger.info("New game started");
@@ -156,6 +156,29 @@ public class GameEngine {
             player.useAbility(2, mouseWorldX, mouseWorldY);
         }
 
+        if (inputHandler.isKeyJustPressed(KeyCode.E) && craftingUI != null) {
+            Blacksmith bs = findNearbyBlacksmith();
+            if (bs != null) {
+                craftingUI.setVisible(!craftingUI.isVisible());
+                if (craftingUI.isVisible()) craftingUI.refresh();
+            }
+        }
+    }
+
+    private Blacksmith findNearbyBlacksmith() {
+        if (player == null) {
+            return null;
+        }
+        for (Entity e : tower.getCurrentFloor().getEntities()) {
+            if (e instanceof Blacksmith bs) {
+                double dx = bs.getCenterX() - player.getCenterX();
+                double dy = bs.getCenterY() - player.getCenterY();
+                if (dx * dx + dy * dy <= 80 * 80) {
+                    return bs;
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -285,6 +308,12 @@ public class GameEngine {
         drawFog(gc, viewW, viewH);
     }
 
+    /**
+     * In-game effect of fog.
+     * @param gc
+     * @param viewW
+     * @param viewH
+     */
     private void drawFog(GraphicsContext gc, double viewW, double viewH) {
         double px = player.getCenterX() - cameraX;
         double py = player.getCenterY() - cameraY;
@@ -298,6 +327,10 @@ public class GameEngine {
         gc.fillRect(0, 0, viewW, viewH);
     }
 
+    /**
+     * Rendering Aim indicator for direction facing.
+     * @param gc
+     */
     private void drawAimIndicator(GraphicsContext gc) {
         double px = player.getCenterX() - cameraX;
         double py = player.getCenterY() - cameraY;
@@ -317,6 +350,9 @@ public class GameEngine {
         gc.strokeLine(px, py, px + dirX * 25, py + dirY * 25);
     }
 
+    /**
+     * Getters and setters.
+     */
     public Player getPlayer() { return player; }
     public Tower getTower() { return tower; }
     public GameStateManager getStateManager() { return stateManager; }

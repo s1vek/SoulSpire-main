@@ -57,6 +57,10 @@ public class Material extends Item {
         return this.quantity >= amount;
     }
 
+    /**
+     * Getters and setters.
+     */
+
     public MaterialType getMaterialType() { return materialType; }
     public int getQuantity() { return quantity; }
 }

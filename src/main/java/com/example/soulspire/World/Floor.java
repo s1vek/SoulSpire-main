@@ -219,6 +219,10 @@ public class Floor {
         entities.add(entity);
     }
 
+    /**
+     * Getters and setters.
+     */
+
     public void removeEntity(Entity entity) { entities.remove(entity); }
     public List<Entity> getEntities() { return entities; }
     public int getFloorNumber() { return floorNumber; }

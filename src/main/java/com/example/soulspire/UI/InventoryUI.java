@@ -30,8 +30,9 @@ public class InventoryUI extends VBox {
         setStyle("-fx-background-color: black; -fx-border-color: white;");
 
         for (Label l : new Label[]{ironLabel, dustLabel, echoLabel}) {
-            l.setStyle("-fx-text-fill: white;");
+            l.setStyle("-fx-text-fill: white; -fx-font-family: 'MedievalSharp';");
         }
+
         getChildren().addAll(ironLabel, dustLabel, echoLabel);
     }
 
