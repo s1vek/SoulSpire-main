@@ -4,7 +4,8 @@ import com.example.soulspire.Entity.Chest;
 import com.example.soulspire.Entity.Player.Player;
 import com.example.soulspire.Item.Material;
 import com.example.soulspire.Item.MaterialType;
-import javafx.scene.canvas.GraphicsContext;
+import com.example.soulspire.Util.SpriteLoader;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 /**
@@ -15,7 +16,7 @@ import javafx.scene.paint.Color;
 public class ChestGuardian extends Enemy {
 
     private Chest guardedChest;
-    private static final Color BODY_COLOR = Color.INDIGO;
+    private static final Image TEXTURE = SpriteLoader.loadSprite("/com/example/soulspire/images/chestboss.png");
 
     /**
      * Creates a chest guardian near the given chest.
@@ -67,6 +68,11 @@ public class ChestGuardian extends Enemy {
         if (guardedChest != null) {
             guardedChest.setGuardianDefeated(true);
         }
+    }
+
+    @Override
+    protected Image getTexture() {
+        return TEXTURE;
     }
 
 

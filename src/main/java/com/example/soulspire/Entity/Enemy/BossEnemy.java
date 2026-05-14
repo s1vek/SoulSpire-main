@@ -5,7 +5,9 @@ import com.example.soulspire.Entity.Projectile;
 import com.example.soulspire.Item.Material;
 import com.example.soulspire.Item.MaterialType;
 import com.example.soulspire.Util.GameLogger;
+import com.example.soulspire.Util.SpriteLoader;
 import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 /**
  * The final boss of the tower, found on the last floor.
@@ -18,9 +20,10 @@ public class BossEnemy extends Enemy {
     private static final double PROJECTILE_SPEED = 280;
     private static final double PROJECTILE_RANGE = 450;
     private double rangedCooldown;
-
     private int currentPhase;
     private boolean phaseTransitioned;
+    private static final Image TEXTURE = SpriteLoader.loadSprite("/com/example/soulspire/images/boss.png");
+
 
     public BossEnemy(double x, double y, int floorNumber) {
         super(x, y, 48, 48, 200, 25, 10, 80, 400, 50, 1.2, floorNumber);
@@ -92,6 +95,10 @@ public class BossEnemy extends Enemy {
         logger.info("Boss defeated. Tower cleared!");
     }
 
+    @Override
+    protected Image getTexture() {
+        return TEXTURE;
+    }
 
 
     public int getCurrentPhase() { return currentPhase; }

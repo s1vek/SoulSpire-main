@@ -4,6 +4,8 @@ import com.example.soulspire.Entity.Player.Player;
 import com.example.soulspire.Entity.Projectile;
 import com.example.soulspire.Item.Material;
 import com.example.soulspire.Item.MaterialType;
+import com.example.soulspire.Util.SpriteLoader;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 /**
@@ -18,6 +20,7 @@ public class RangedEnemy extends Enemy {
     private static final double FIRE_RATE = 0.8;
     private Projectile lastFiredProjectile;
     private double shootCooldown = 0;
+    private static final Image TEXTURE = SpriteLoader.loadSprite("/com/example/soulspire/images/enemy.png");
 
     public RangedEnemy(double x, double y, int floorNumber) {
         super(x, y, 26, 26, 25, 15, 1, 60, 250, 200, 0.4, floorNumber);
@@ -78,6 +81,11 @@ public class RangedEnemy extends Enemy {
         p.setColor(Color.ORANGERED);
         currentFloor.addEntity(p);
 
+    }
+
+    @Override
+    protected Image getTexture() {
+        return TEXTURE;
     }
 
     /**

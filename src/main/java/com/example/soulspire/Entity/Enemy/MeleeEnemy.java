@@ -3,7 +3,9 @@ package com.example.soulspire.Entity.Enemy;
 import com.example.soulspire.Entity.Player.Player;
 import com.example.soulspire.Item.Material;
 import com.example.soulspire.Item.MaterialType;
+import com.example.soulspire.Util.SpriteLoader;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 /**
@@ -14,6 +16,7 @@ import javafx.scene.paint.Color;
 public class MeleeEnemy extends Enemy {
 
     private static final Color BODY_COLOR = Color.DARKRED;
+    private static final Image TEXTURE = SpriteLoader.loadSprite("/com/example/soulspire/images/enemy.png");
 
     /**
      * Creates a melee enemy with default stats scaled by floor number.
@@ -55,6 +58,11 @@ public class MeleeEnemy extends Enemy {
             moveToward(target.getCenterX(), target.getCenterY(), deltaTime);
         }
 
+    }
+
+    @Override
+    protected Image getTexture() {
+        return TEXTURE;
     }
 
 }

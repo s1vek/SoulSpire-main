@@ -19,7 +19,7 @@ public class Tile {
         load(TileType.WALL, "/com/example/soulspire/images/wall.png");
         load(TileType.FLOOR, "/com/example/soulspire/images/floor.png");
         load(TileType.DOOR, "/com/example/soulspire/images/door.png");
-
+        load(TileType.TRAP, "/com/example/soulspire/images/trapfloor.png");
     }
 
     private static void load(TileType type, String path) {

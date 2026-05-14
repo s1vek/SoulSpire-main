@@ -10,7 +10,8 @@ import com.example.soulspire.Entity.Player.Player;
 import com.example.soulspire.Item.Item;
 import com.example.soulspire.Item.LootTable;
 import com.example.soulspire.Util.GameLogger;
-
+import javafx.scene.image.Image;
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -167,6 +168,13 @@ public abstract class Enemy extends LivingEntity {
     }
 
     /**
+     * Returns the sprite to render. Override in subclasses.
+     */
+    protected Image getTexture() {
+        return null;
+    }
+
+    /**
      * Called when this enemy's health reaches zero.
      * Subclasses can override to add specific death behavior (e.g. ChestGuardian
      * unlocks its guarded chest).
@@ -181,8 +189,14 @@ public abstract class Enemy extends LivingEntity {
         double screenX = x - cameraX;
         double screenY = y - cameraY;
 
-        gc.setFill(getBodyColor());
-        gc.fillOval(screenX, screenY, width, height);
+        Image tex = getTexture();
+        if (tex != null) {
+            gc.setImageSmoothing(false);
+            gc.drawImage(tex, screenX, screenY, width, height);
+        } else {
+            gc.setFill(getBodyColor());
+            gc.fillRect(screenX, screenY, width, height);
+        }
 
         if (aggroed) {
             gc.setStroke(Color.YELLOW);
