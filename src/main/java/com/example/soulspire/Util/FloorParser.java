@@ -9,6 +9,7 @@ import com.example.soulspire.Entity.Enemy.MeleeEnemy;
 import com.example.soulspire.Entity.Enemy.RangedEnemy;
 import com.example.soulspire.Entity.Npc.Blacksmith;
 import com.example.soulspire.Item.SoulEcho;
+import com.example.soulspire.Item.SoulEchoType;
 import com.example.soulspire.World.Floor;
 import com.example.soulspire.World.TileType;
 import org.json.JSONArray;
@@ -159,18 +160,13 @@ public class FloorParser {
     }
 
     private static SoulEcho randomSoulEcho() {
-        AbilityType[] types = AbilityType.values();
-        AbilityType target = types[random.nextInt(types.length)];
-        double value = 0.1 + random.nextDouble() * 0.3;
-        String name = switch (target) {
-            case OFFENSIVE -> "Fury Shard";
-            case DEFENSIVE -> "Iron Ward";
-            case MOBILITY  -> "Wind Essence";
-            case UTILITY   -> "Arcane Focus";
+        SoulEcho[] pool = {
+                new SoulEcho("Fury Shard",   "+2 Damage",   SoulEchoType.DAMAGE,  2),
+                new SoulEcho("Iron Ward",    "+2 Defense",  SoulEchoType.DEFENSE, 2),
+                new SoulEcho("Vital Spark",  "+5 Health",  SoulEchoType.HEALTH, 5),
+                new SoulEcho("Wind Essence", "+2 Speed",   SoulEchoType.SPEED,  2),
         };
-        return new SoulEcho(name,
-                target.name() + " abilities +" + (int)(value * 100) + "%",
-                value, target);
+        return pool[random.nextInt(pool.length)];
     }
 
 }

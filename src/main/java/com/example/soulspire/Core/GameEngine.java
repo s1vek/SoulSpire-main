@@ -165,6 +165,10 @@ public class GameEngine {
                 if (craftingUI.isVisible()) craftingUI.refresh();
             }
         }
+
+        if (inputHandler.isKeyJustPressed(KeyCode.E)) {
+            player.interact(tower.getCurrentFloor().getEntities());
+        }
     }
 
     private Blacksmith findNearbyBlacksmith() {
@@ -187,9 +191,7 @@ public class GameEngine {
      * Attempts to move the player, checking tile collisions first.
      */
     private void tryMove(Direction dir, double deltaTime) {
-
         double distance = player.getMoveSpeed() * deltaTime;
-
         double newX = player.getX();
         double newY = player.getY();
 
@@ -209,7 +211,6 @@ public class GameEngine {
             player.setX(newX);
             player.setY(newY);
         }
-
     }
 
     /**

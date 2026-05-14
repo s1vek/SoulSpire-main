@@ -1,10 +1,12 @@
 package com.example.soulspire.Ability;
 import com.example.soulspire.Combat.CombatSystem;
+import com.example.soulspire.Core.GameConfig;
 import com.example.soulspire.Entity.Enemy.Enemy;
 import com.example.soulspire.Entity.Entity;
 import com.example.soulspire.Entity.Player.Player;
 import com.example.soulspire.World.Floor;
 import com.example.soulspire.World.Tile;
+import com.example.soulspire.World.TileType;
 
 /**
  * Warrior ability 1: Dashes forward and stuns the first enemy hit.
@@ -65,6 +67,15 @@ public class ChargeAbility extends Ability {
             if (tile == null || !tile.isWalkable()) {
                 break;
             }
+
+            if (tile.getType() == TileType.DESTRUCTIBLE_WALL) {
+                int gridX = (int) (centerX / GameConfig.TILE_SIZE);
+                int gridY = (int) (centerY / GameConfig.TILE_SIZE);
+                floor.setTileAt(gridX, gridY, TileType.FLOOR);
+            } else if (!tile.isWalkable()) {
+                break;
+            }
+
             finalX = checkX;
             finalY = checkY;
         }

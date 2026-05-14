@@ -36,7 +36,14 @@ public class Chest extends Entity implements Interactable {
 
     @Override
     public void onInteract(Player player) {
+        if (opened || !guardianDefeated) return;
+        opened = true;
 
+        if (reward != null) {
+            reward.apply(player);
+            player.getInventory().addItem(reward);
+            player.setPickupMessage("Got " + reward.getName());
+        }
     }
 
     @Override

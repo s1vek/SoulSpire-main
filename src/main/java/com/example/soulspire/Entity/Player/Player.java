@@ -1,6 +1,7 @@
 package com.example.soulspire.Entity.Player;
 
 import com.example.soulspire.Ability.Ability;
+import com.example.soulspire.Ability.AbilityType;
 import com.example.soulspire.Combat.CombatSystem;
 import com.example.soulspire.Core.GameConfig;
 import com.example.soulspire.Core.Saveable;
@@ -10,11 +11,13 @@ import com.example.soulspire.Entity.Entity;
 import com.example.soulspire.Entity.LivingEntity;
 import com.example.soulspire.Item.Inventory;
 import com.example.soulspire.Item.Item;
+import com.example.soulspire.Item.SoulEcho;
 import com.example.soulspire.Util.GameLogger;
 import com.example.soulspire.World.Floor;
 import com.example.soulspire.World.Tile;
 import com.example.soulspire.World.TileType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +72,11 @@ public abstract class Player extends LivingEntity implements Saveable {
     private static final double TRAP_DAMAGE_INTERVAL = 1.0;
 
     private static final int TRAP_DAMAGE = 10;
+
+    private final List<SoulEcho> activeSoulEchoes = new ArrayList<>();
+
+    private String pickupMessage = "";
+    private double pickupTimer = 0;
 
     /**
      * Creates a new player with stats derived from the given character type.
@@ -154,8 +162,42 @@ public abstract class Player extends LivingEntity implements Saveable {
      * @param nearbyEntities list of entities on the current floor
      */
     public void interact(List<Entity> nearbyEntities) {
+        Interactable closest = null;
+        double closestDist = Double.MAX_VALUE;
+
+        for (Entity e : nearbyEntities) {
+            if (!(e instanceof Interactable interactable)) continue;
+            if (!interactable.canInteract()) continue;
+
+            double dx = e.getCenterX() - getCenterX();
+            double dy = e.getCenterY() - getCenterY();
+            double dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist <= interactable.getInteractionRange() && dist < closestDist) {
+                closest = interactable;
+                closestDist = dist;
+            }
+        }
+
+        if (closest != null) {
+            closest.onInteract(this);
+        }
 
     }
+
+
+    /**
+     * Adds a SoulEcho modifier obtained from a chest.
+     */
+    public void addSoulEcho(SoulEcho echo) {
+        activeSoulEchoes.add(echo);
+    }
+
+
+    public List<SoulEcho> getActiveSoulEchoes() {
+        return activeSoulEchoes;
+    }
+
 
     /**
      * Adds an item to the player's inventory.
@@ -194,6 +236,9 @@ public abstract class Player extends LivingEntity implements Saveable {
     @Override
     public void update(double deltaTime) {
         updateInvulnerability(deltaTime);
+        if (pickupTimer > 0) {
+            pickupTimer -= deltaTime;
+        }
         checkTrapDamage(deltaTime);
 
         if (currentAttackCooldown > 0) {
@@ -223,6 +268,19 @@ public abstract class Player extends LivingEntity implements Saveable {
             takeDamage(TRAP_DAMAGE);
             trapDamageTimer = TRAP_DAMAGE_INTERVAL;
         }
+    }
+
+    public void setPickupMessage(String msg) {
+        this.pickupMessage = msg;
+        this.pickupTimer = 3.0;
+    }
+
+    public String getPickupMessage() {
+        return pickupMessage;
+    }
+
+    public double getPickupTimer() {
+        return pickupTimer;
     }
 
     @Override
@@ -298,6 +356,7 @@ public abstract class Player extends LivingEntity implements Saveable {
             inventory.loadSaveData((Map<String, Object>) invMap);
         }
     }
+
 
     /**
      * Getters and setters.

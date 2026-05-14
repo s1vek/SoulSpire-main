@@ -32,6 +32,7 @@ public class HUDOverlay extends BorderPane {
     private Rectangle[] slotCdOverlays;
     private Label[] slotCdLabels;
     private Label[] slotNames;
+    private Label pickupLabel;
 
     public HUDOverlay(GameEngine engine) {
         this.engine = engine;
@@ -75,6 +76,10 @@ public class HUDOverlay extends BorderPane {
         slotCdOverlays = new Rectangle[3];
         slotCdLabels = new Label[3];
         slotNames = new Label[3];
+
+        pickupLabel = new Label("");
+        pickupLabel.setStyle("-fx-text-fill: gold; -fx-font-size: 14;");
+        topBar.getChildren().add(pickupLabel);
 
         for (int i = 0; i < 3; i++) {
             slotIcons[i] = new ImageView();
@@ -141,5 +146,14 @@ public class HUDOverlay extends BorderPane {
                 slotCdLabels[i].setText(String.format("%.1f", abilities[i].getCurrentCooldown()));
             }
         }
+
+        if (player.getPickupTimer() > 0) {
+            pickupLabel.setText(player.getPickupMessage());
+        } else {
+            pickupLabel.setText("");
+        }
+
     }
+
+
 }

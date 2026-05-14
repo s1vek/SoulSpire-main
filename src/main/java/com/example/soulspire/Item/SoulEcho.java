@@ -1,6 +1,7 @@
 package com.example.soulspire.Item;
 
 import com.example.soulspire.Ability.AbilityType;
+import com.example.soulspire.Entity.Player.Player;
 
 /**
  * A temporary modifier found inside guarded chests.
@@ -9,49 +10,39 @@ import com.example.soulspire.Ability.AbilityType;
  */
 public class SoulEcho extends Item {
 
-    private double modifierValue;
-    private AbilityType targetAbilityType;
+    private final SoulEchoType type;
+    private final int value;
     private boolean active;
 
-    /**
-     * Creates a new Soul Echo modifier.
-     *
-     * @param name              display name (e.g. "Flame Amplifier")
-     * @param description       effect description (e.g. "Offensive abilities deal 20% more damage")
-     * @param modifierValue     the modifier amount (e.g. 0.2 for +20%)
-     * @param targetAbilityType which ability category this affects
-     */
-    public SoulEcho(String name, String description, double modifierValue, AbilityType targetAbilityType) {
+    public SoulEcho(String name, String description, SoulEchoType type, int value) {
         super(name, description);
-        this.modifierValue = modifierValue;
-        this.targetAbilityType = targetAbilityType;
+        this.type = type;
+        this.value = value;
         this.active = false;
     }
-
     /**
-     * Activates this modifier on the player. Called when picked up from a chest.
+     * Applies the bonus directly to the player's stats.
+     * Multiple SoulEchoes naturally stack — each just adds to the current stat.
      */
-    public void activate() {
+    public void apply(Player player) {
+        switch (type) {
+            case DAMAGE -> player.setAttackDamage(player.getAttackDamage() + value);
+            case HEALTH -> {
+                player.setMaxHealth(player.getMaxHealth() + value);
+                player.setCurrentHealth(player.getCurrentHealth() + value);
+            }
+            case DEFENSE -> player.setDefense(player.getDefense() + value);
+            case SPEED   -> player.setMoveSpeed(player.getMoveSpeed() + value);
+        }
         this.active = true;
-    }
-
-    /**
-     * Deactivates this modifier. Called on player death or run completion.
-     */
-    public void deactivate() {
-        this.active = false;
     }
 
     @Override
     public Item copy() {
-        return new SoulEcho(name, description, modifierValue, targetAbilityType);
+        return new SoulEcho(name, description, type, value);
     }
 
-    /**
-     * Getters and setters.
-     */
-
-    public double getModifierValue() { return modifierValue; }
-    public AbilityType getTargetAbilityType() { return targetAbilityType; }
+    public SoulEchoType getType() { return type; }
+    public int getValue() { return value; }
     public boolean isActive() { return active; }
 }

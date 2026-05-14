@@ -5,6 +5,7 @@ import com.example.soulspire.Ability.BladewhirlAbility;
 import com.example.soulspire.Ability.ChargeAbility;
 import com.example.soulspire.Ability.EnrageAbility;
 import com.example.soulspire.Util.SoundManager;
+import com.example.soulspire.World.TileType;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -76,4 +77,5 @@ public class Warrior extends Player {
             gc.strokeRect(screenX - 2, screenY - 2, getWidth() + 4, getHeight() + 4);
         }
     }
+
 }
